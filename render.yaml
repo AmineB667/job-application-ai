@@ -1,0 +1,30 @@
+# Render Blueprint — one-click deploy.
+# Push this repo to GitHub, then on render.com :
+#   New + → Blueprint → connect this repo → Render reads this file and provisions the service.
+#
+# Free tier limits :
+# - 750h/month per service (enough for one always-on instance)
+# - Spins down after 15 min of inactivity (~30s cold start)
+# - 60s function timeout (OK for our 20-30s DeepSeek calls)
+#
+# To upgrade later (no cold start), switch plan to "starter" ($7/month).
+
+services:
+  - type: web
+    name: amine-job-tool
+    runtime: node
+    plan: free
+    region: frankfurt
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_VERSION
+        value: 20
+      - key: DEEPSEEK_API_KEY
+        sync: false   # set this manually in Render dashboard, never committed
+      - key: DEEPSEEK_BASE_URL
+        value: https://api.deepseek.com
+      - key: DEEPSEEK_MODEL
+        value: deepseek-chat
+      - key: RATE_LIMIT_PER_DAY
+        value: "3"
