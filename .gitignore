@@ -7,3 +7,14 @@ node_modules/
 dist/
 out/
 .vercel
+
+# TypeScript incremental build cache
+tsconfig.tsbuildinfo
+
+# Claude Code local settings
+.claude/
+
+# Personal files not meant for the repo
+Cv Amine*.pdf
+*.local.pdf
+
