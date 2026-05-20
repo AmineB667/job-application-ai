@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import type { AnalysisResult } from "@/lib/types";
 import { useStore, type HistoryEntry } from "@/lib/store";
+import { useT } from "@/hooks/use-t";
 
 const statusTone: Record<HistoryEntry["status"], "default" | "success" | "warning" | "destructive" | "secondary"> = {
   envoyé: "default",
@@ -20,15 +21,15 @@ export function HistoryPanel({ onOpen }: { onOpen: (entry: HistoryEntry) => void
   const history = useStore((s) => s.history);
   const remove = useStore((s) => s.removeHistory);
   const updateStatus = useStore((s) => s.updateStatus);
+  const uiLang = useStore((s) => s.uiLang);
+  const t = useT();
 
   if (history.length === 0) {
     return (
       <Card>
         <CardHeader>
-          <CardTitle>Historique vide</CardTitle>
-          <CardDescription>
-            Lancez une analyse pour démarrer un historique de candidatures. Tout est stocké localement sur cette machine.
-          </CardDescription>
+          <CardTitle>{t.history.emptyTitle}</CardTitle>
+          <CardDescription>{t.history.emptyDesc}</CardDescription>
         </CardHeader>
       </Card>
     );
@@ -42,19 +43,19 @@ export function HistoryPanel({ onOpen }: { onOpen: (entry: HistoryEntry) => void
             <div className="flex items-start justify-between gap-2">
               <CardTitle className="text-sm flex items-center gap-1.5 min-w-0">
                 <Building2 className="h-3.5 w-3.5 shrink-0" />
-                <span className="truncate">{h.result.meta.targetCompany || "Entreprise"}</span>
+                <span className="truncate">{h.result.meta.targetCompany || t.history.company}</span>
               </CardTitle>
               <Badge variant={statusTone[h.status]}>{h.status}</Badge>
             </div>
-            <CardDescription className="truncate">{h.result.meta.jobTitle || "Poste"}</CardDescription>
+            <CardDescription className="truncate">{h.result.meta.jobTitle || t.history.job}</CardDescription>
           </CardHeader>
           <CardContent className="space-y-3">
             <div className="flex items-center gap-4 text-xs text-muted-foreground">
               <span className="flex items-center gap-1">
                 <Calendar className="h-3 w-3" />
-                {new Date(h.createdAt).toLocaleDateString("fr-FR")}
+                {new Date(h.createdAt).toLocaleDateString(uiLang === "en" ? "en-GB" : "fr-FR")}
               </span>
-              <span>Score {h.result.coach.candidatureScore}/100</span>
+              <span>{t.history.score} {h.result.coach.candidatureScore}/100</span>
             </div>
             <div className="flex flex-wrap gap-1">
               {(["envoyé", "entretien", "refus", "relance", "brouillon"] as HistoryEntry["status"][]).map((s) => (
@@ -82,7 +83,7 @@ export function HistoryPanel({ onOpen }: { onOpen: (entry: HistoryEntry) => void
               }}
             >
               <Trash2 className="h-3 w-3" />
-              Supprimer
+              {t.history.deleteBtn}
             </Button>
           </CardContent>
         </Card>

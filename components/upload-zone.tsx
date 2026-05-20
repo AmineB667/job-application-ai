@@ -5,6 +5,7 @@ import { useDropzone } from "react-dropzone";
 import { FileText, Upload, X, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { useT } from "@/hooks/use-t";
 
 type Props = {
   onParsed: (text: string, filename: string) => void;
@@ -13,6 +14,7 @@ type Props = {
 };
 
 export function UploadZone({ onParsed, parsedFilename, onClear }: Props) {
+  const t = useT();
   const [busy, setBusy] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
 
@@ -59,7 +61,7 @@ export function UploadZone({ onParsed, parsedFilename, onClear }: Props) {
           </div>
           <div className="min-w-0">
             <p className="text-sm font-medium truncate">{parsedFilename}</p>
-            <p className="text-xs text-muted-foreground">CV chargé et extrait</p>
+            <p className="text-xs text-muted-foreground">{t.upload.loaded}</p>
           </div>
         </div>
         {onClear && (
@@ -87,13 +89,9 @@ export function UploadZone({ onParsed, parsedFilename, onClear }: Props) {
         {busy ? <Loader2 className="h-5 w-5 animate-spin" /> : <Upload className="h-5 w-5" />}
       </div>
       <p className="mt-3 text-sm font-medium">
-        {busy
-          ? "Extraction en cours…"
-          : isDragActive
-            ? "Déposez le fichier ici"
-            : "Glissez votre CV ou cliquez pour parcourir"}
+        {busy ? t.upload.loading : isDragActive ? t.upload.dragActive : t.upload.idle}
       </p>
-      <p className="mt-1 text-xs text-muted-foreground">PDF, DOCX, TXT ou MD</p>
+      <p className="mt-1 text-xs text-muted-foreground">{t.upload.formats}</p>
       {error && <p className="mt-3 text-xs text-destructive">{error}</p>}
     </div>
   );

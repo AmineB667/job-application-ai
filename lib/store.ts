@@ -4,6 +4,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import type { AnalysisResult, UserProfile } from "./types";
 import { EMPTY_PROFILE } from "./profile";
+import type { UILang } from "./ui-lang";
 
 export type HistoryEntry = {
   id: string;
@@ -27,6 +28,10 @@ type Store = {
   /** Clé DeepSeek apportée par l'utilisateur (BYOK). Jamais envoyée à autre que /api/analyze. */
   apiKey: string;
   setApiKey: (k: string) => void;
+
+  /** Langue de l'interface (distincte de la langue du CV/lettre). */
+  uiLang: UILang;
+  setUILang: (l: UILang) => void;
 };
 
 export const useStore = create<Store>()(
@@ -47,6 +52,9 @@ export const useStore = create<Store>()(
 
       apiKey: "",
       setApiKey: (k) => set({ apiKey: k.trim() }),
+
+      uiLang: "fr",
+      setUILang: (l) => set({ uiLang: l }),
     }),
     {
       name: "amine-job-tool-v2",

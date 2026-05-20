@@ -3,18 +3,24 @@
 import * as React from "react";
 import { LayoutDashboard, Sparkles, FileText, Mail, History, Settings2, Briefcase, User } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useStore } from "@/lib/store";
+import { useT } from "@/hooks/use-t";
 
 export type View = "new" | "ats" | "cv" | "letter" | "history" | "profile" | "settings";
 
 export function Sidebar({ view, onView }: { view: View; onView: (v: View) => void }) {
+  const t = useT();
+  const uiLang = useStore((s) => s.uiLang);
+  const setUILang = useStore((s) => s.setUILang);
+
   const items: { id: View; label: string; icon: React.ElementType }[] = [
-    { id: "new", label: "Nouvelle candidature", icon: Sparkles },
-    { id: "ats", label: "Analyse ATS", icon: LayoutDashboard },
-    { id: "cv", label: "Mon CV", icon: FileText },
-    { id: "letter", label: "Ma lettre", icon: Mail },
-    { id: "history", label: "Historique", icon: History },
-    { id: "profile", label: "Mon profil", icon: User },
-    { id: "settings", label: "Paramètres", icon: Settings2 },
+    { id: "new", label: t.nav.new, icon: Sparkles },
+    { id: "ats", label: t.nav.ats, icon: LayoutDashboard },
+    { id: "cv", label: t.nav.cv, icon: FileText },
+    { id: "letter", label: t.nav.letter, icon: Mail },
+    { id: "history", label: t.nav.history, icon: History },
+    { id: "profile", label: t.nav.profile, icon: User },
+    { id: "settings", label: t.nav.settings, icon: Settings2 },
   ];
 
   return (
@@ -25,7 +31,7 @@ export function Sidebar({ view, onView }: { view: View; onView: (v: View) => voi
         </div>
         <div className="leading-tight">
           <p className="text-sm font-semibold">Job Tool</p>
-          <p className="text-[10px] text-muted-foreground">CV + cover letter AI</p>
+          <p className="text-[10px] text-muted-foreground">{t.brand}</p>
         </div>
       </div>
       <nav className="space-y-0.5">
@@ -49,15 +55,41 @@ export function Sidebar({ view, onView }: { view: View; onView: (v: View) => voi
           );
         })}
       </nav>
-      <div className="mt-auto pt-6 text-[10px] text-muted-foreground px-2">
-        <p>Version 1.0 · Confidentialité prioritaire</p>
-        <p className="mt-0.5">Vos données sont traitées localement. Aucune information personnelle n&apos;est transmise ou conservée.</p>
-        <p className="mt-2">
+      <div className="mt-auto pt-6 text-[10px] text-muted-foreground px-2 space-y-2">
+        {/* Toggle langue UI */}
+        <div className="flex items-center gap-1">
+          <button
+            onClick={() => setUILang("fr")}
+            className={cn(
+              "rounded px-1.5 py-0.5 text-[10px] font-medium transition-colors",
+              uiLang === "fr"
+                ? "bg-primary text-primary-foreground"
+                : "hover:bg-muted hover:text-foreground"
+            )}
+          >
+            🇫🇷 FR
+          </button>
+          <button
+            onClick={() => setUILang("en")}
+            className={cn(
+              "rounded px-1.5 py-0.5 text-[10px] font-medium transition-colors",
+              uiLang === "en"
+                ? "bg-primary text-primary-foreground"
+                : "hover:bg-muted hover:text-foreground"
+            )}
+          >
+            🇬🇧 EN
+          </button>
+        </div>
+
+        <p>{t.footer.version}</p>
+        <p>{t.footer.privacy}</p>
+        <p>
           <a
             href="mailto:benbouazzamine@gmail.com"
             className="underline underline-offset-2 hover:text-foreground transition-colors"
           >
-            Contactez-nous
+            {t.footer.contact}
           </a>
         </p>
       </div>

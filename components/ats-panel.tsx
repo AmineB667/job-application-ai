@@ -7,14 +7,17 @@ import { Progress } from "@/components/ui/progress";
 import { ScoreRing } from "@/components/score-ring";
 import { SkillsRadar } from "@/components/skills-radar";
 import type { ATSAnalysis } from "@/lib/types";
+import { useT } from "@/hooks/use-t";
 
 export function ATSPanel({ ats }: { ats: ATSAnalysis }) {
+  const t = useT();
+
   const radarData = [
-    { dimension: "Mots-clés", score: ats.scores.keywords },
-    { dimension: "Expérience", score: ats.scores.experience },
-    { dimension: "Compétences", score: ats.scores.skills },
-    { dimension: "ATS-safe", score: ats.scores.ats },
-    { dimension: "Global", score: ats.scores.overall },
+    { dimension: t.ats.keywordsLabel, score: ats.scores.keywords },
+    { dimension: t.ats.experienceLabel, score: ats.scores.experience },
+    { dimension: t.ats.skillsLabel, score: ats.scores.skills },
+    { dimension: t.ats.atsLabel, score: ats.scores.ats },
+    { dimension: t.ats.overallLabel, score: ats.scores.overall },
   ];
 
   return (
@@ -22,16 +25,16 @@ export function ATSPanel({ ats }: { ats: ATSAnalysis }) {
       {/* Scores */}
       <Card>
         <CardHeader>
-          <CardTitle>Scores ATS</CardTitle>
-          <CardDescription>Compatibilité CV ↔ offre, mesurée sur 5 dimensions.</CardDescription>
+          <CardTitle>{t.ats.scoresTitle}</CardTitle>
+          <CardDescription>{t.ats.scoresDesc}</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-5">
-            <ScoreRing value={ats.scores.overall} label="Score global" />
-            <ScoreRing value={ats.scores.keywords} label="Mots-clés" />
-            <ScoreRing value={ats.scores.experience} label="Expérience" />
-            <ScoreRing value={ats.scores.skills} label="Compétences" />
-            <ScoreRing value={ats.scores.ats} label="ATS-safe" />
+            <ScoreRing value={ats.scores.overall} label={t.ats.overallLabel} />
+            <ScoreRing value={ats.scores.keywords} label={t.ats.keywordsLabel} />
+            <ScoreRing value={ats.scores.experience} label={t.ats.experienceLabel} />
+            <ScoreRing value={ats.scores.skills} label={t.ats.skillsLabel} />
+            <ScoreRing value={ats.scores.ats} label={t.ats.atsLabel} />
           </div>
         </CardContent>
       </Card>
@@ -39,8 +42,8 @@ export function ATSPanel({ ats }: { ats: ATSAnalysis }) {
       <div className="grid gap-4 lg:grid-cols-2">
         <Card>
           <CardHeader>
-            <CardTitle>Compatibilité ATS par système</CardTitle>
-            <CardDescription>Estimation par moteur ATS de marché.</CardDescription>
+            <CardTitle>{t.ats.compatTitle}</CardTitle>
+            <CardDescription>{t.ats.compatDesc}</CardDescription>
           </CardHeader>
           <CardContent className="space-y-3">
             {[
@@ -63,8 +66,8 @@ export function ATSPanel({ ats }: { ats: ATSAnalysis }) {
 
         <Card>
           <CardHeader>
-            <CardTitle>Cartographie des dimensions</CardTitle>
-            <CardDescription>Vue radar du fit.</CardDescription>
+            <CardTitle>{t.ats.radarTitle}</CardTitle>
+            <CardDescription>{t.ats.radarDesc}</CardDescription>
           </CardHeader>
           <CardContent>
             <SkillsRadar data={radarData} />
@@ -77,20 +80,20 @@ export function ATSPanel({ ats }: { ats: ATSAnalysis }) {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <ShieldCheck className="h-4 w-4 text-success" />
-              Couvert
+              {t.ats.coveredTitle}
             </CardTitle>
-            <CardDescription>Ce que l&apos;offre demande et que votre profil couvre.</CardDescription>
+            <CardDescription>{t.ats.coveredDesc}</CardDescription>
           </CardHeader>
           <CardContent className="space-y-3">
-            <ChipGroup title="Mots-clés ATS prioritaires" items={ats.extracted.priorityKeywords} tone="success" />
-            <ChipGroup title="Hard skills" items={ats.extracted.hardSkills} />
-            <ChipGroup title="Soft skills" items={ats.extracted.softSkills} tone="secondary" />
-            <ChipGroup title="Outils & technologies" items={[...ats.extracted.tools, ...ats.extracted.technologies]} />
+            <ChipGroup title={t.ats.priorityKeywords} items={ats.extracted.priorityKeywords} tone="success" />
+            <ChipGroup title={t.ats.hardSkills} items={ats.extracted.hardSkills} />
+            <ChipGroup title={t.ats.softSkills} items={ats.extracted.softSkills} tone="secondary" />
+            <ChipGroup title={t.ats.toolsTech} items={[...ats.extracted.tools, ...ats.extracted.technologies]} />
             {ats.extracted.certifications.length > 0 && (
-              <ChipGroup title="Certifications attendues" items={ats.extracted.certifications} />
+              <ChipGroup title={t.ats.certifications} items={ats.extracted.certifications} />
             )}
             <div>
-              <p className="text-xs text-muted-foreground mb-1">Niveau d&apos;expérience demandé</p>
+              <p className="text-xs text-muted-foreground mb-1">{t.ats.experienceLevel}</p>
               <Badge variant="outline">{ats.extracted.experienceLevel}</Badge>
             </div>
           </CardContent>
@@ -100,20 +103,20 @@ export function ATSPanel({ ats }: { ats: ATSAnalysis }) {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <AlertTriangle className="h-4 w-4 text-warning" />
-              À combler
+              {t.ats.gapsTitle}
             </CardTitle>
-            <CardDescription>Écarts détectés entre offre et profil — déjà reformulés dans le CV.</CardDescription>
+            <CardDescription>{t.ats.gapsDesc}</CardDescription>
           </CardHeader>
           <CardContent className="space-y-3">
-            <ChipGroup title="Compétences manquantes" items={ats.gaps.missingSkills} tone="warning" />
-            <ChipGroup title="Mots-clés absents" items={ats.gaps.missingKeywords} tone="warning" />
-            <ChipGroup title="À reformuler" items={ats.gaps.skillsToReframe} tone="secondary" />
-            <ChipGroup title="Titres de poste suggérés" items={ats.gaps.titleSuggestions} tone="outline" />
+            <ChipGroup title={t.ats.missingSkills} items={ats.gaps.missingSkills} tone="warning" />
+            <ChipGroup title={t.ats.missingKeywords} items={ats.gaps.missingKeywords} tone="warning" />
+            <ChipGroup title={t.ats.toReframe} items={ats.gaps.skillsToReframe} tone="secondary" />
+            <ChipGroup title={t.ats.titleSuggestions} items={ats.gaps.titleSuggestions} tone="outline" />
             {ats.gaps.parsingIssues.length > 0 && (
-              <BulletList icon={<X className="h-3 w-3 text-destructive" />} title="Problèmes de parsing" items={ats.gaps.parsingIssues} />
+              <BulletList icon={<X className="h-3 w-3 text-destructive" />} title={t.ats.parsingIssues} items={ats.gaps.parsingIssues} />
             )}
             {ats.gaps.weakSections.length > 0 && (
-              <BulletList icon={<AlertTriangle className="h-3 w-3 text-warning" />} title="Sections ATS faibles" items={ats.gaps.weakSections} />
+              <BulletList icon={<AlertTriangle className="h-3 w-3 text-warning" />} title={t.ats.weakSections} items={ats.gaps.weakSections} />
             )}
           </CardContent>
         </Card>
@@ -123,9 +126,9 @@ export function ATSPanel({ ats }: { ats: ATSAnalysis }) {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Lightbulb className="h-4 w-4 text-warning" />
-            Optimisations appliquées
+            {t.ats.optimizationsTitle}
           </CardTitle>
-          <CardDescription>Liste des optimisations effectuées automatiquement.</CardDescription>
+          <CardDescription>{t.ats.optimizationsDesc}</CardDescription>
         </CardHeader>
         <CardContent>
           <ul className="space-y-1.5 text-sm">
@@ -138,7 +141,7 @@ export function ATSPanel({ ats }: { ats: ATSAnalysis }) {
           </ul>
           {ats.warnings.length > 0 && (
             <div className="mt-4 rounded-md border border-warning/30 bg-warning/10 p-3 text-xs">
-              <p className="font-medium text-warning mb-1">Vigilance</p>
+              <p className="font-medium text-warning mb-1">{t.ats.vigilanceLabel}</p>
               <ul className="list-disc pl-4 space-y-0.5">
                 {ats.warnings.map((w, i) => (
                   <li key={i}>{w}</li>

@@ -24,6 +24,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 
 import { useStore } from "@/lib/store";
+import { useT } from "@/hooks/use-t";
 import type { AnalysisResult, CVTone, LetterTone, CVTemplate, OutputLanguage } from "@/lib/types";
 import { CV_TEMPLATES } from "@/lib/types";
 
@@ -59,9 +60,11 @@ export default function Home() {
   const [outputLanguage, setOutputLanguage] = React.useState<OutputLanguage>("fr");
   const [loading, setLoading] = React.useState(false);
   const [result, setResult] = React.useState<AnalysisResult | null>(null);
+
   const addHistory = useStore((s) => s.addHistory);
   const userProfile = useStore((s) => s.userProfile);
   const apiKey = useStore((s) => s.apiKey);
+  const t = useT();
 
   const fetchJobFromUrl = async () => {
     if (!jobUrl) return;
@@ -74,19 +77,19 @@ export default function Home() {
       const json = await res.json();
       if (!res.ok) throw new Error(json.error);
       setJobOffer(json.text);
-      toast.success("Offre récupérée depuis l'URL");
+      toast.success(t.toasts.urlFetched);
     } catch (e) {
-      toast.error(e instanceof Error ? e.message : "Erreur fetch URL");
+      toast.error(e instanceof Error ? e.message : t.toasts.analysisError);
     }
   };
 
   const analyze = async () => {
     if (!cvText) {
-      toast.error("Chargez d'abord votre CV.");
+      toast.error(t.toasts.noCv);
       return;
     }
     if (!jobOffer || jobOffer.length < 80) {
-      toast.error("Collez ou récupérez le texte de l'offre (>80 caractères).");
+      toast.error(t.toasts.noOffer);
       return;
     }
     setLoading(true);
@@ -109,13 +112,13 @@ export default function Home() {
         }),
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Erreur");
+      if (!res.ok) throw new Error(data.error || t.toasts.analysisError);
       setResult(data as AnalysisResult);
       addHistory(buildHistoryEntry(data));
-      toast.success("Analyse terminée — CV et lettre prêts.");
+      toast.success(t.toasts.analysisDone);
       setView("ats");
     } catch (e) {
-      toast.error(e instanceof Error ? e.message : "Erreur d'analyse");
+      toast.error(e instanceof Error ? e.message : t.toasts.analysisError);
     } finally {
       setLoading(false);
     }
@@ -137,7 +140,7 @@ export default function Home() {
       }),
     });
     if (!res.ok) {
-      toast.error("Erreur export");
+      toast.error(t.toasts.exportError);
       return;
     }
     const blob = await res.blob();
@@ -164,12 +167,7 @@ export default function Home() {
           <div className="flex items-center justify-between px-6 py-3">
             <div>
               <h1 className="text-base font-semibold">
-                {view === "new" && "Nouvelle candidature"}
-                {view === "ats" && "Analyse ATS"}
-                {view === "cv" && "Mon CV"}
-                {view === "letter" && "Ma lettre"}
-                {view === "history" && "Historique des candidatures"}
-                {view === "settings" && "Paramètres"}
+                {t.viewTitles[view] ?? ""}
               </h1>
               <p className="text-xs text-muted-foreground">
                 {result?.meta.targetCompany && (
@@ -190,7 +188,7 @@ export default function Home() {
               {result && view !== "new" && (
                 <Button variant="outline" size="sm" onClick={() => setView("new")}>
                   <Sparkles className="h-3.5 w-3.5" />
-                  Nouvelle analyse
+                  {t.newApp.newAnalysis}
                 </Button>
               )}
               <ThemeToggle />
@@ -203,9 +201,13 @@ export default function Home() {
             {!userProfile.identity.fullName && view !== "profile" && view !== "settings" && (
               <Card className="border-warning/40 bg-warning/5">
                 <CardHeader>
-                  <CardTitle className="text-sm">Set up your profile first</CardTitle>
+                  <CardTitle className="text-sm">{t.profileWarning.title}</CardTitle>
                   <CardDescription>
-                    The analysis quality depends on it. Click <button className="underline" onClick={() => setView("profile")}>Mon profil</button> to load the demo or build your own.
+                    {t.profileWarning.desc}{" "}
+                    <button className="underline" onClick={() => setView("profile")}>
+                      {t.profileWarning.link}
+                    </button>{" "}
+                    {t.profileWarning.desc2}
                   </CardDescription>
                 </CardHeader>
               </Card>
@@ -216,14 +218,8 @@ export default function Home() {
               <NewApplicationView
                 cvText={cvText}
                 filename={filename}
-                onCvParsed={(t, f) => {
-                  setCvText(t);
-                  setFilename(f);
-                }}
-                onCvClear={() => {
-                  setCvText("");
-                  setFilename(null);
-                }}
+                onCvParsed={(text, f) => { setCvText(text); setFilename(f); }}
+                onCvClear={() => { setCvText(""); setFilename(null); }}
                 jobOffer={jobOffer}
                 onJobOffer={setJobOffer}
                 jobUrl={jobUrl}
@@ -250,16 +246,16 @@ export default function Home() {
                 <CoachPanel coach={result.coach} />
               </div>
             )}
-            {view === "ats" && !result && <EmptyState onNew={() => setView("new")} label="Lancez une analyse pour voir les scores ATS." />}
+            {view === "ats" && !result && <EmptyState onNew={() => setView("new")} label={t.empty.ats} />}
 
             {view === "cv" && result && (
               <div className="space-y-4">
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <div className="flex items-center gap-2 text-sm">
                     <FileText className="h-4 w-4 text-muted-foreground" />
-                    <span className="text-muted-foreground">Tonalité</span>
+                    <span className="text-muted-foreground">{t.cvView.tonalityLabel}</span>
                     <Badge>{result.meta.cvTone}</Badge>
-                    <span className="text-muted-foreground ml-2">· 1 page A4</span>
+                    <span className="text-muted-foreground ml-2">{t.cvView.onePage}</span>
                   </div>
                   <div className="flex gap-2">
                     <Button variant="outline" size="sm" onClick={() => exportFile("cv", "pdf")}>
@@ -275,16 +271,16 @@ export default function Home() {
 
                 <Card>
                   <CardHeader>
-                    <CardTitle className="text-sm">Template visuel</CardTitle>
+                    <CardTitle className="text-sm">{t.cvView.templateTitle}</CardTitle>
                     <CardDescription className="text-xs">
-                      Tous les templates sont single column et ATS safe. {CV_TEMPLATES.find((t) => t.id === cvTemplate)?.description}
+                      {t.cvView.templateDesc} {CV_TEMPLATES.find((tmpl) => tmpl.id === cvTemplate)?.description}
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
                     <Tabs value={cvTemplate} onValueChange={(v) => setCvTemplate(v as CVTemplate)}>
                       <TabsList>
-                        {CV_TEMPLATES.map((t) => (
-                          <TabsTrigger key={t.id} value={t.id}>{t.label}</TabsTrigger>
+                        {CV_TEMPLATES.map((tmpl) => (
+                          <TabsTrigger key={tmpl.id} value={tmpl.id}>{tmpl.label}</TabsTrigger>
                         ))}
                       </TabsList>
                     </Tabs>
@@ -294,14 +290,14 @@ export default function Home() {
                 <CVPreview cv={result.cv} template={cvTemplate} lang={result.meta.language ?? "fr"} />
               </div>
             )}
-            {view === "cv" && !result && <EmptyState onNew={() => setView("new")} label="Aucun CV généré pour le moment." />}
+            {view === "cv" && !result && <EmptyState onNew={() => setView("new")} label={t.empty.cv} />}
 
             {view === "letter" && result && (
               <div className="space-y-4">
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <div className="flex items-center gap-2 text-sm">
                     <Mail className="h-4 w-4 text-muted-foreground" />
-                    <span className="text-muted-foreground">Ton</span>
+                    <span className="text-muted-foreground">{t.letterView.tonLabel}</span>
                     <Badge>{result.meta.letterTone}</Badge>
                   </div>
                   <div className="flex gap-2">
@@ -318,7 +314,7 @@ export default function Home() {
                 <LetterPreview letter={result.letter} lang={result.meta.language ?? "fr"} />
               </div>
             )}
-            {view === "letter" && !result && <EmptyState onNew={() => setView("new")} label="Aucune lettre générée pour le moment." />}
+            {view === "letter" && !result && <EmptyState onNew={() => setView("new")} label={t.empty.letter} />}
 
             {view === "history" && (
               <HistoryPanel
@@ -340,6 +336,7 @@ export default function Home() {
 }
 
 function EmptyState({ onNew, label }: { onNew: () => void; label: string }) {
+  const t = useT();
   return (
     <Card>
       <CardContent className="flex flex-col items-center justify-center py-16 text-center gap-4">
@@ -347,7 +344,7 @@ function EmptyState({ onNew, label }: { onNew: () => void; label: string }) {
         <p className="text-sm text-muted-foreground max-w-sm">{label}</p>
         <Button onClick={onNew}>
           <Sparkles className="h-4 w-4" />
-          Démarrer une analyse
+          {t.empty.startBtn}
         </Button>
       </CardContent>
     </Card>
@@ -379,176 +376,172 @@ type NewProps = {
 };
 
 function NewApplicationView(p: NewProps) {
+  const t = useT();
+  const n = t.newApp;
   const cvReady = Boolean(p.cvText);
   const offerReady = p.jobOffer.length >= 80;
   const canLaunch = cvReady && offerReady && !p.loading;
 
   return (
     <>
-    <div className="grid gap-4 lg:grid-cols-2 pb-24">
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <span className={cvReady ? "text-success" : ""}>1.</span> Votre CV
-            {cvReady && <Badge variant="success" className="ml-1">✓</Badge>}
-          </CardTitle>
-          <CardDescription>PDF, DOCX, TXT. Vous pouvez aussi utiliser votre CV actuel.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <UploadZone
-            parsedFilename={p.filename}
-            onParsed={p.onCvParsed}
-            onClear={p.onCvClear}
-          />
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <span className={offerReady ? "text-success" : ""}>2.</span> L&apos;offre d&apos;emploi
-            {offerReady && <Badge variant="success" className="ml-1">✓</Badge>}
-          </CardTitle>
-          <CardDescription>Collez le texte de l&apos;offre, ou indiquez une URL.</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-3">
-          <div className="flex gap-2">
-            <Input
-              placeholder="https://… (LinkedIn, WTTJ, Indeed…)"
-              value={p.jobUrl}
-              onChange={(e) => p.onJobUrl(e.target.value)}
+      <div className="grid gap-4 lg:grid-cols-2 pb-24">
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <span className={cvReady ? "text-success" : ""}>{n.step1Title}</span>
+              {cvReady && <Badge variant="success" className="ml-1">✓</Badge>}
+            </CardTitle>
+            <CardDescription>{n.step1Desc}</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <UploadZone
+              parsedFilename={p.filename}
+              onParsed={p.onCvParsed}
+              onClear={p.onCvClear}
             />
-            <Button variant="outline" onClick={p.onFetchUrl} disabled={!p.jobUrl}>
-              <Link2 className="h-4 w-4" />
-              Fetch
-            </Button>
-          </div>
-          <Textarea
-            rows={9}
-            placeholder="Ou collez directement le texte de l'offre d'emploi…"
-            value={p.jobOffer}
-            onChange={(e) => p.onJobOffer(e.target.value)}
-          />
-          <p className="text-[11px] text-muted-foreground">
-            {p.jobOffer.length} caractères {p.jobOffer.length >= 80 ? "✓" : "(min. 80)"}
-          </p>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
 
-      <Card className="lg:col-span-2">
-        <CardHeader>
-          <CardTitle>3. Cibles & tonalité</CardTitle>
-          <CardDescription>Langue de sortie, entreprise, LinkedIn, ton CV et ton lettre.</CardDescription>
-        </CardHeader>
-        <CardContent className="grid gap-4 md:grid-cols-2">
-          <div className="space-y-1.5 md:col-span-2">
-            <label className="text-xs font-medium">Langue du CV et de la lettre</label>
-            <Tabs value={p.outputLanguage} onValueChange={(v) => p.onOutputLanguage(v as OutputLanguage)}>
-              <TabsList>
-                <TabsTrigger value="fr">🇫🇷 Français</TabsTrigger>
-                <TabsTrigger value="en">🇬🇧 English</TabsTrigger>
-              </TabsList>
-            </Tabs>
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <span className={offerReady ? "text-success" : ""}>{n.step2Title}</span>
+              {offerReady && <Badge variant="success" className="ml-1">✓</Badge>}
+            </CardTitle>
+            <CardDescription>{n.step2Desc}</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <div className="flex gap-2">
+              <Input
+                placeholder={n.urlPlaceholder}
+                value={p.jobUrl}
+                onChange={(e) => p.onJobUrl(e.target.value)}
+              />
+              <Button variant="outline" onClick={p.onFetchUrl} disabled={!p.jobUrl}>
+                <Link2 className="h-4 w-4" />
+                {n.fetchBtn}
+              </Button>
+            </div>
+            <Textarea
+              rows={9}
+              placeholder={n.offerPlaceholder}
+              value={p.jobOffer}
+              onChange={(e) => p.onJobOffer(e.target.value)}
+            />
             <p className="text-[11px] text-muted-foreground">
-              {p.outputLanguage === "en"
-                ? "CV and cover letter will be written in fluent English, with native Anglo style and section titles."
-                : "CV et lettre en français naturel, titres de sections en français."}
+              {n.charCount(p.jobOffer.length)}
             </p>
-          </div>
-          <div className="space-y-1.5">
-            <label className="text-xs font-medium">Entreprise cible</label>
-            <Input
-              placeholder="ex: Datadog, Doctolib, Société Générale…"
-              value={p.targetCompany}
-              onChange={(e) => p.onTargetCompany(e.target.value)}
-            />
-          </div>
-          <div className="space-y-1.5">
-            <label className="text-xs font-medium">URL LinkedIn de vous (optionnel)</label>
-            <Input
-              placeholder="https://www.linkedin.com/in/your-handle"
-              value={p.linkedinUrl}
-              onChange={(e) => p.onLinkedinUrl(e.target.value)}
-            />
-          </div>
-          <div className="space-y-1.5">
-            <label className="text-xs font-medium">Version CV</label>
-            <Tabs value={p.cvTone} onValueChange={(v) => p.onCvTone(v as CVTone)}>
-              <TabsList className="h-auto flex-wrap">
-                {CV_TONES.map((t) => (
-                  <TabsTrigger key={t.value} value={t.value}>
-                    {t.label}
-                  </TabsTrigger>
-                ))}
-              </TabsList>
-            </Tabs>
-          </div>
-          <div className="space-y-1.5">
-            <label className="text-xs font-medium">Ton de la lettre</label>
-            <Tabs value={p.letterTone} onValueChange={(v) => p.onLetterTone(v as LetterTone)}>
-              <TabsList className="h-auto flex-wrap">
-                {LETTER_TONES.map((t) => (
-                  <TabsTrigger key={t.value} value={t.value}>
-                    {t.label}
-                  </TabsTrigger>
-                ))}
-              </TabsList>
-            </Tabs>
-          </div>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
 
-      <div className="lg:col-span-2 flex flex-col items-center gap-3 rounded-xl border border-primary/20 bg-primary/5 p-6">
-        <div className="flex items-center gap-2 text-xs">
-          <Badge variant={cvReady ? "success" : "secondary"}>CV {cvReady ? "✓" : "—"}</Badge>
-          <Badge variant={offerReady ? "success" : "secondary"}>Offre {offerReady ? "✓" : `${p.jobOffer.length}/80`}</Badge>
-          {p.targetCompany && <Badge variant="outline">{p.targetCompany}</Badge>}
+        <Card className="lg:col-span-2">
+          <CardHeader>
+            <CardTitle>{n.step3Title}</CardTitle>
+            <CardDescription>{n.step3Desc}</CardDescription>
+          </CardHeader>
+          <CardContent className="grid gap-4 md:grid-cols-2">
+            <div className="space-y-1.5 md:col-span-2">
+              <label className="text-xs font-medium">{n.outputLangLabel}</label>
+              <Tabs value={p.outputLanguage} onValueChange={(v) => p.onOutputLanguage(v as OutputLanguage)}>
+                <TabsList>
+                  <TabsTrigger value="fr">🇫🇷 Français</TabsTrigger>
+                  <TabsTrigger value="en">🇬🇧 English</TabsTrigger>
+                </TabsList>
+              </Tabs>
+              <p className="text-[11px] text-muted-foreground">
+                {p.outputLanguage === "en" ? n.outputLangDescEn : n.outputLangDescFr}
+              </p>
+            </div>
+            <div className="space-y-1.5">
+              <label className="text-xs font-medium">{n.targetCompanyLabel}</label>
+              <Input
+                placeholder={n.targetCompanyPlaceholder}
+                value={p.targetCompany}
+                onChange={(e) => p.onTargetCompany(e.target.value)}
+              />
+            </div>
+            <div className="space-y-1.5">
+              <label className="text-xs font-medium">{n.linkedinLabel}</label>
+              <Input
+                placeholder={n.linkedinPlaceholder}
+                value={p.linkedinUrl}
+                onChange={(e) => p.onLinkedinUrl(e.target.value)}
+              />
+            </div>
+            <div className="space-y-1.5">
+              <label className="text-xs font-medium">{n.cvVersionLabel}</label>
+              <Tabs value={p.cvTone} onValueChange={(v) => p.onCvTone(v as CVTone)}>
+                <TabsList className="h-auto flex-wrap">
+                  {CV_TONES.map((tone) => (
+                    <TabsTrigger key={tone.value} value={tone.value}>
+                      {tone.label}
+                    </TabsTrigger>
+                  ))}
+                </TabsList>
+              </Tabs>
+            </div>
+            <div className="space-y-1.5">
+              <label className="text-xs font-medium">{n.letterToneLabel}</label>
+              <Tabs value={p.letterTone} onValueChange={(v) => p.onLetterTone(v as LetterTone)}>
+                <TabsList className="h-auto flex-wrap">
+                  {LETTER_TONES.map((tone) => (
+                    <TabsTrigger key={tone.value} value={tone.value}>
+                      {tone.label}
+                    </TabsTrigger>
+                  ))}
+                </TabsList>
+              </Tabs>
+            </div>
+          </CardContent>
+        </Card>
+
+        <div className="lg:col-span-2 flex flex-col items-center gap-3 rounded-xl border border-primary/20 bg-primary/5 p-6">
+          <div className="flex items-center gap-2 text-xs">
+            <Badge variant={cvReady ? "success" : "secondary"}>{n.badgeCv(cvReady)}</Badge>
+            <Badge variant={offerReady ? "success" : "secondary"}>{n.badgeOffer(offerReady, p.jobOffer.length)}</Badge>
+            {p.targetCompany && <Badge variant="outline">{p.targetCompany}</Badge>}
+          </div>
+          <motion.div whileTap={{ scale: 0.97 }}>
+            <Button size="lg" onClick={p.onAnalyze} disabled={!canLaunch} className="min-w-[300px] h-12 text-base">
+              {p.loading ? (
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  {n.analyzing}
+                </>
+              ) : (
+                <>
+                  <Sparkles className="h-4 w-4" />
+                  {n.launchBtn}
+                </>
+              )}
+            </Button>
+          </motion.div>
+          <p className="text-[11px] text-muted-foreground text-center">{n.estimatedTime}</p>
         </div>
-        <motion.div whileTap={{ scale: 0.97 }}>
-          <Button size="lg" onClick={p.onAnalyze} disabled={!canLaunch} className="min-w-[300px] h-12 text-base">
+      </div>
+
+      {/* Sticky bottom CTA */}
+      <div className="fixed bottom-0 left-0 right-0 lg:left-60 z-40 border-t bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
+        <div className="container max-w-6xl flex items-center justify-between gap-3 py-3 px-6">
+          <div className="flex items-center gap-2 text-xs">
+            <Badge variant={cvReady ? "success" : "secondary"}>{n.badgeCv(cvReady)}</Badge>
+            <Badge variant={offerReady ? "success" : "secondary"}>{n.badgeOffer(offerReady, p.jobOffer.length)}</Badge>
+          </div>
+          <Button onClick={p.onAnalyze} disabled={!canLaunch} size="lg" className="min-w-[200px]">
             {p.loading ? (
               <>
                 <Loader2 className="h-4 w-4 animate-spin" />
-                Analyse en cours…
+                {n.analyzingShort}
               </>
             ) : (
               <>
                 <Sparkles className="h-4 w-4" />
-                Lancer l&apos;analyse ATS + CV + lettre
+                {n.launchBtnShort}
               </>
             )}
           </Button>
-        </motion.div>
-        <p className="text-[11px] text-muted-foreground text-center">
-          ~20 secondes • analyse ATS + CV refondu + lettre + coach
-        </p>
-      </div>
-    </div>
-
-    {/* Sticky bottom CTA — toujours visible quand on est en mode "Nouvelle candidature" */}
-    <div className="fixed bottom-0 left-0 right-0 lg:left-60 z-40 border-t bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
-      <div className="container max-w-6xl flex items-center justify-between gap-3 py-3 px-6">
-        <div className="flex items-center gap-2 text-xs">
-          <Badge variant={cvReady ? "success" : "secondary"}>CV {cvReady ? "✓" : "—"}</Badge>
-          <Badge variant={offerReady ? "success" : "secondary"}>
-            Offre {offerReady ? "✓" : `${p.jobOffer.length}/80`}
-          </Badge>
         </div>
-        <Button onClick={p.onAnalyze} disabled={!canLaunch} size="lg" className="min-w-[200px]">
-          {p.loading ? (
-            <>
-              <Loader2 className="h-4 w-4 animate-spin" />
-              Analyse…
-            </>
-          ) : (
-            <>
-              <Sparkles className="h-4 w-4" />
-              Lancer l&apos;analyse
-            </>
-          )}
-        </Button>
       </div>
-    </div>
     </>
   );
 }
@@ -556,33 +549,33 @@ function NewApplicationView(p: NewProps) {
 function SettingsView() {
   const clear = useStore((s) => s.clear);
   const resetProfile = useStore((s) => s.resetProfile);
+  const t = useT();
+  const s = t.settings;
 
   return (
     <div className="space-y-4">
       <Card>
         <CardHeader>
-          <CardTitle>Storage</CardTitle>
-          <CardDescription>
-            Everything is stored locally in your browser. No server-side account, no cloud sync.
-          </CardDescription>
+          <CardTitle>{s.storageTitle}</CardTitle>
+          <CardDescription>{s.storageDesc}</CardDescription>
         </CardHeader>
         <CardContent className="flex flex-wrap gap-2">
           <Button variant="destructive" size="sm" onClick={clear}>
-            Clear application history
+            {s.clearHistory}
           </Button>
           <Button variant="outline" size="sm" onClick={resetProfile}>
-            Reset profile to empty
+            {s.resetProfile}
           </Button>
         </CardContent>
       </Card>
 
       <Card>
         <CardHeader>
-          <CardTitle>About</CardTitle>
+          <CardTitle>{s.aboutTitle}</CardTitle>
         </CardHeader>
         <CardContent className="text-xs text-muted-foreground space-y-1">
-          <p>Job application tool — analyze ATS fit, regenerate CV, draft personalized cover letters.</p>
-          <p>FR/EN output, 3 visual templates, PDF + DOCX export, all client-side.</p>
+          <p>{s.aboutDesc1}</p>
+          <p>{s.aboutDesc2}</p>
         </CardContent>
       </Card>
     </div>
