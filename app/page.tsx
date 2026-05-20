@@ -555,44 +555,10 @@ function NewApplicationView(p: NewProps) {
 
 function SettingsView() {
   const clear = useStore((s) => s.clear);
-  const apiKey = useStore((s) => s.apiKey);
-  const setApiKey = useStore((s) => s.setApiKey);
   const resetProfile = useStore((s) => s.resetProfile);
 
   return (
     <div className="space-y-4">
-      <Card>
-        <CardHeader>
-          <CardTitle>DeepSeek API key (BYOK)</CardTitle>
-          <CardDescription>
-            Optional. Without a key, you get 3 free analyses per day per IP (shared quota).
-            With your own key, usage is unlimited and billed to your DeepSeek account (~€0.002 per analysis).
-            Create one for free at{" "}
-            <a href="https://platform.deepseek.com/api_keys" target="_blank" rel="noreferrer" className="underline">platform.deepseek.com/api_keys</a>.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-2">
-          <Input
-            type="password"
-            placeholder="sk-..."
-            value={apiKey}
-            onChange={(e) => setApiKey(e.target.value)}
-            autoComplete="off"
-          />
-          {apiKey && (
-            <p className="text-[11px] text-success flex items-center gap-1">
-              <Sparkles className="h-3 w-3" />
-              Your key is set. All analyses will use it. Stored in your browser localStorage only.
-            </p>
-          )}
-          {!apiKey && (
-            <p className="text-[11px] text-muted-foreground">
-              Currently using shared quota. Set your own key for unlimited use.
-            </p>
-          )}
-        </CardContent>
-      </Card>
-
       <Card>
         <CardHeader>
           <CardTitle>Storage</CardTitle>
