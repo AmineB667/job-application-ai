@@ -50,8 +50,8 @@ export function Sidebar({ view, onView }: { view: View; onView: (v: View) => voi
         })}
       </nav>
       <div className="mt-auto pt-6 text-[10px] text-muted-foreground px-2">
-        <p>V1 MVP local • DeepSeek</p>
-        <p className="mt-0.5">Stockage local, 0 cloud.</p>
+        <p>Version 1.0 · Confidentialité prioritaire</p>
+        <p className="mt-0.5">Vos données sont traitées localement. Aucune information personnelle n&apos;est transmise ou conservée.</p>
       </div>
     </aside>
   );
