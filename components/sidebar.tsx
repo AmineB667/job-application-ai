@@ -52,6 +52,14 @@ export function Sidebar({ view, onView }: { view: View; onView: (v: View) => voi
       <div className="mt-auto pt-6 text-[10px] text-muted-foreground px-2">
         <p>Version 1.0 · Confidentialité prioritaire</p>
         <p className="mt-0.5">Vos données sont traitées localement. Aucune information personnelle n&apos;est transmise ou conservée.</p>
+        <p className="mt-2">
+          <a
+            href="mailto:benbouazzamine@gmail.com"
+            className="underline underline-offset-2 hover:text-foreground transition-colors"
+          >
+            Contactez-nous
+          </a>
+        </p>
       </div>
     </aside>
   );
