@@ -20,7 +20,7 @@ Ce que je viendrais chercher chez {{COMPANY}}, c'est précisément l'échelle qu
 
 Je serais ravi d'en discuter sur un échange court avant la fin du mois.
 
-Amine Ben Bouazza
+[Candidate name]
 
 
 EXEMPLE 2. Grand groupe. Direction marketing institutionnel.
@@ -35,7 +35,7 @@ Ce que je propose à {{COMPANY}}, c'est cette capacité hybride à challenger un
 
 Je reste disponible pour un entretien à votre convenance.
 
-Amine Ben Bouazza
+[Candidate name]
 
 
 EXEMPLE 3. Startup pré PMF. Marketing Lead.
@@ -50,7 +50,7 @@ Concrètement, je suis capable d'arriver lundi avec une lecture honnête de votr
 
 Mon agenda est ouvert cette semaine.
 
-Amine Ben Bouazza
+[Candidate name]
 
 
 EXEMPLE 4. PME industrielle. Chef de projet marketing.
@@ -63,7 +63,7 @@ Mon ambition serait simple. Faire en sorte que la qualité que vous mettez dans 
 
 Je serais ravi de passer une demi journée chez vous pour comprendre vos enjeux six à douze mois.
 
-Amine Ben Bouazza
+[Candidate name]
 
 
 EXEMPLE 5. Cabinet de conseil en stratégie. Senior Consultant.
@@ -76,7 +76,7 @@ Ce que j'aimerais apporter à {{COMPANY}} relève autant de la méthode que de l
 
 Mon profil hybride entre conseil et opérationnel agence vous donnerait un consultant capable de défendre une recommandation devant un comex le matin et de la mettre en production l'après midi. Je suis disponible pour un entretien à votre convenance.
 
-Amine Ben Bouazza
+[Candidate name]
 `;
 
 // =====================================================================
@@ -103,7 +103,7 @@ What draws me to {{COMPANY}} is the discipline of the team you have already asse
 I would be glad to walk through a specific case on a 30 minute call this week.
 
 Best,
-Amine Ben Bouazza
+[Candidate name]
 
 
 EXAMPLE 2. UK Strategy Consultancy. Senior Consultant.
@@ -119,7 +119,7 @@ What I would bring to {{COMPANY}} is a hybrid profile few candidates can credibl
 I would welcome the chance to discuss your current case load.
 
 Sincerely,
-Amine Ben Bouazza
+[Candidate name]
 
 
 EXAMPLE 3. EU Scale-up SaaS. Senior Marketing Manager.
@@ -135,7 +135,7 @@ The reason I am applying now rather than in six months is straightforward. Both 
 I am available this week for an introductory call.
 
 Best regards,
-Amine Ben Bouazza
+[Candidate name]
 
 
 EXAMPLE 4. Big Tech EMEA. Marketing Manager.
@@ -151,7 +151,7 @@ What I would bring to {{COMPANY}} is the operator habit. I read dashboards, I wr
 I would be glad to discuss your roadmap on a short call.
 
 Best,
-Amine Ben Bouazza
+[Candidate name]
 
 
 EXAMPLE 5. International Music Industry. Label or Festival.
@@ -165,7 +165,7 @@ What I would bring to {{COMPANY}} is a data discipline still rare in our industr
 The same logic applies to streaming, sync and merch. I would be glad to share a few specific cases on a call this week.
 
 Best,
-Amine Ben Bouazza
+[Candidate name]
 
 
 EXAMPLE 6. International Luxury Brand. Marketing Manager.
@@ -181,7 +181,7 @@ On the digital execution side, I have led web rebuilds that pass Lighthouse audi
 I would be honored to discuss the international priorities of the seasons ahead with your team.
 
 Sincerely,
-Amine Ben Bouazza
+[Candidate name]
 
 
 EXAMPLE 7. EdTech or Higher Education. Marketing Lead.
@@ -195,7 +195,7 @@ What I would add to {{COMPANY}}, beyond that regulatory experience, is a marketi
 I am bilingual French English, which allows me to work across both your domestic programs and the international tracks you likely develop. I would welcome the chance to discuss the role.
 
 Best regards,
-Amine Ben Bouazza
+[Candidate name]
 
 
 EXAMPLE 8. Boutique Consulting. Senior Associate.
@@ -211,7 +211,7 @@ What I would add to {{COMPANY}} is the ability to scope a strategic question in 
 I would welcome the opportunity for a conversation at your convenience.
 
 Sincerely,
-Amine Ben Bouazza
+[Candidate name]
 `;
 
 // === Profil sérialisé pour le system prompt. Multi-user : prend le profil du visiteur.
@@ -330,7 +330,7 @@ export function buildAnalysisPrompt(input: AnalyzeInput): {
 
   const langInstruction = isEN
     ? `OUTPUT LANGUAGE
-All textual content of the CV and the cover letter MUST be in fluent natural English. This includes: the headline, summary, every bullet, every skill group label and item, every section title in the data (if relevant), the certifications (translate generic ones, keep proper names), education degree names (translate generic, keep institution names), languages, and the entire cover letter. Proper nouns (Amine Ben Bouazza, Riff Agency, Bendigital, BEN&Co, Lafayette Associés, Sciences Po, ENSAM, Ferrandi, ESIEE IT, Neoma, TotalEnergies, Inwi, EA Productions, 212 Live off, IIM Léonard de Vinci, Université de Caen Normandie) MUST stay in their original form. The "language" field of meta MUST be "en".`
+All textual content of the CV and the cover letter MUST be in fluent natural English. This includes: the headline, summary, every bullet, every skill group label and item, every section title in the data (if relevant), the certifications (translate generic ones, keep proper names), education degree names (translate generic, keep institution names), languages, and the entire cover letter. Proper nouns ([Candidate name], Riff Agency, Bendigital, BEN&Co, Lafayette Associés, Sciences Po, ENSAM, Ferrandi, ESIEE IT, Neoma, TotalEnergies, Inwi, EA Productions, 212 Live off, IIM Léonard de Vinci, Université de Caen Normandie) MUST stay in their original form. The "language" field of meta MUST be "en".`
     : `LANGUE DE SORTIE
 Tout le contenu textuel du CV et de la lettre DOIT être en français naturel. Aucun mot anglais sauf marques et noms propres. Le champ "language" de meta DOIT être "fr".`;
 
@@ -338,13 +338,13 @@ Tout le contenu textuel du CV et de la lettre DOIT être en français naturel. A
     ? `STRICT CV RULES TO FILL ONE A4 PAGE
 A. EXACTLY 4 work experiences, no more, no less. The candidate's primary current role must be first.
 B. EXACTLY 4 bullets per experience, each between 22 and 30 words (about 140 to 200 characters).
-C. Summary: 4 full lines, 55 to 75 words, opens by mentioning Riff Agency.
+C. Summary: 4 full lines, 55 to 75 words, opens by mentioning the candidate's primary current role.
 D. EXACTLY 5 skill groups, each with 4 to 6 items.
 E. If you lack material, draw from the achievementsBank to flesh out.`
     : `CONTRAINTES CV STRICTES POUR REMPLIR A4
 A. EXACTEMENT 4 expériences. Le rôle actuel principal du candidat en première position.
 B. EXACTEMENT 4 bullets par expérience, chacun entre 22 et 30 mots (140 à 200 caractères).
-C. Résumé en 4 lignes pleines, 55 à 75 mots, ouvre sur Riff Agency.
+C. Résumé en 4 lignes pleines, 55 à 75 mots, ouvre sur le rôle actuel principal du candidat.
 D. EXACTEMENT 5 groupes de compétences, chacun avec 4 à 6 items.
 E. Si tu manques de matière, utilise achievementsBank pour étoffer.`;
 
@@ -383,7 +383,11 @@ SOURCE OF TRUTH
 The PROFILE section below is the absolute source of truth. The CV text uploaded may be incomplete or outdated. ${primaryRoleNote}
 
 QUALITY STANDARD FOR LETTERS
-You will see ${isEN ? "8 reference letters in English" : "5 lettres de référence en français"} at the end of this prompt. They were written at the highest quality bar. Imitate their level, structure and register, but adapt the concrete content to the candidate's actual profile and the specific company. Do not copy proper names or quoted figures from the examples if they do not apply to the candidate.
+You will see ${isEN ? "8 reference letters in English" : "5 lettres de référence en français"} at the end of this prompt. They were written at the highest quality bar.
+Imitate their LEVEL, STRUCTURE, REGISTER and PHRASING PATTERNS, but NEVER reuse the proper names from them.
+All company names, agency names and client names that appear in the examples (such as Riff Agency, Bendigital, Lafayette Associés, BEN&Co, Sciences Po, ENSAM, Ferrandi, ESIEE IT, Neoma, TotalEnergies, Inwi, EA Productions, 212 Live off, IIM Léonard de Vinci, Université de Caen Normandie, Commune de Paris 1871) are PLACEHOLDERS from the example author's portfolio. You MUST substitute them with the ACTUAL companies, clients and schools from the candidate's profile.
+The signature [Candidate name] must be replaced by the actual candidate's full name.
+If a sentence sounds like filler, remove it. If it does not carry information, remove it.
 
 ${langInstruction}
 
@@ -416,7 +420,7 @@ OFFER URL
 ${input.jobOfferUrl || "not provided"}
 
 CANDIDATE LINKEDIN
-${input.linkedinUrl || "https://www.linkedin.com/in/aminebenbouazza"}
+${input.linkedinUrl || input.userProfile?.identity.linkedin || "not provided"}
 
 CURRENT CV (raw extract, may be incomplete, PROFILE wins on conflict)
 ${input.cvText}
@@ -472,7 +476,7 @@ Produce a single valid JSON object, no markdown, no backticks, no comment, stric
     "greeting": "<in target language, appropriate to the tone>",
     "parts": {
       "intro": "<paragraph 1, opens on a specific company observation>",
-      "proof": "<paragraph 2, at least one concrete number, mentions Riff Agency or Bendigital>",
+      "proof": "<paragraph 2, at least one concrete number, anchored in the candidate's primary current role or another experience>",
       "fit": "<paragraph 3, why me now>",
       "close": "<paragraph 4, concrete next step, ends with the appropriate closing phrase>"
     },

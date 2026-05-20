@@ -4,8 +4,8 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
-  title: "Amine — Job Tool",
-  description: "Outil personnel de candidature : analyse ATS, refonte CV, lettre de motivation",
+  title: "Job Application AI",
+  description: "Free AI tool to optimize your CV and write personalized cover letters in FR or EN. ATS scoring, 3 templates, PDF/DOCX export.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

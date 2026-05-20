@@ -1,190 +1,159 @@
-// Profil consolidé d'Amine Ben Bouazza.
-// Sert maintenant de PROFIL DÉMO : pré-chargé dans l'app au premier lancement
-// ou via le bouton "Charger profil démo". Chaque visiteur peut le remplacer
-// par le sien depuis la page Profil.
+// PROFIL DÉMO — données fictives.
+// Affiché aux visiteurs qui cliquent "Load demo profile" depuis la page Profile.
+// Ne représente personne en particulier. Sert uniquement à démontrer ce qu'un
+// profil bien rempli donne en sortie (CV + lettre de motivation).
 //
-// IMPORTANT : pour ne plus afficher tes vraies coordonnées sur le déploiement
-// public, ajuste les champs identity ci-dessous (email, téléphone) ou
-// utilise un profil "Demo Candidate" générique.
+// Pour utiliser l'app avec ton vrai profil :
+// 1. Va dans "Mon profil"
+// 2. Clique "Import JSON" et charge ton propre profil JSON
+// 3. Ou édite manuellement les champs
 
 import type { UserProfile } from "./types";
 
 export const AMINE_PROFILE: UserProfile = {
   identity: {
-    fullName: "Amine Ben Bouazza",
-    title: "CEO Riff Agency • Co-fondateur Bendigital • Consultant ingénierie de certification",
-    birthDate: "1998-04-03",
+    fullName: "Jordan Martin",
+    title: "Head of Growth — SaaS B2B",
     nationality: "Française",
     location: "Paris, France",
-    remote: "Télétravail ou présentiel",
+    remote: "Hybride ou télétravail",
     internationalMobility: true,
-    drivingLicense: "Permis B",
-    email: "benbouazzamine@gmail.com",
-    phone: "+33 6 80 44 65 93",
-    linkedin: "https://www.linkedin.com/in/aminebenbouazza",
-    websites: ["riff.business", "bendigital.net"],
+    email: "jordan.martin@example.com",
+    phone: "+33 6 00 00 00 00",
+    linkedin: "https://www.linkedin.com/in/jordan-martin-demo",
+    websites: ["jordanmartin.example"],
   },
 
-  // PRIMARY ROLE : Riff Agency (rôle actuel principal d'Amine en 2026).
-  // Doit apparaître en haut du CV et être systématiquement valorisé dans la lettre.
-  primaryRole: "CEO Riff Agency",
+  primaryRole: "Head of Growth at MetricFlow",
 
-  pitch: `CEO de Riff Agency et co-fondateur de Bendigital, Amine pilote deux agences actives entre Paris et Casablanca tout en conseillant l'enseignement supérieur français en ingénierie de certification (Sciences Po, ENSAM, Ferrandi). 5 ans d'expérience cumulée entre opérationnel growth (Meta Ads, Google Ads, GA4, CRO) et direction stratégique, avec un portefeuille clients de la PME au grand compte (TotalEnergies, Inwi, EA Productions). Bilingue FR/EN, IA-driven, orientation ROI.`,
+  pitch: `Head of Growth chez MetricFlow, une scale-up SaaS B2B en série B, j'ai construit la fonction acquisition de zéro à 8M€ d'ARR sur 24 mois. Profil hybride opérationnel et stratégique, je manipule indifféremment Google Ads, Meta Ads, LinkedIn Ads, GA4 et HubSpot, et je sais cadrer une équipe de 5 marketeurs autour de cycles d'expérimentation hebdomadaires. Bilingue FR/EN, data-driven, orientation ROI.`,
 
   experiences: [
     {
-      role: "CEO • Co-fondateur",
-      company: "Riff Agency (riff.business)",
-      location: "Paris & Casablanca",
+      role: "Head of Growth",
+      company: "MetricFlow",
+      location: "Paris",
       start: "2023",
       end: null,
       current: true,
       isPrimary: true,
       bullets: [
-        "Direction générale d'une agence music business positionnée sur l'axe MENA-Europe pour la scène hip-hop et urbaine contemporaine",
-        "Pilotage de 8 verticales intégrées : marketing digital, relations presse FR/MENA/international, release et distribution DSP, artist management, booking et live, brand partnerships et sync, direction créative, merch et e-commerce",
-        "Conception et exécution de campagnes Meta Ads chirurgicales pour remplissage de salles et drive de releases, avec ciblages comportementaux diaspora et audiences régionales",
-        "Structuration de l'équipe, pilotage P&L, négociation des partenariats stratégiques avec promoteurs et labels",
-        "Clients et partenaires : EA Productions (promoteur Paris), 212 Live off (promoteur MENA), artistes indépendants en développement",
+        "Construction de la fonction acquisition d'une scale-up SaaS B2B de zéro à 8M€ d'ARR en 24 mois, avec une équipe de 5 marketeurs internalisés",
+        "Pilotage d'un budget paid annuel de 1.8M€ répartis entre LinkedIn Ads, Google Ads et Meta, avec un CAC blended ramené de 1400€ à 620€",
+        "Mise en place d'une stack tracking GA4 + HubSpot + Looker permettant l'attribution multi-touch et l'identification des canaux à plus fort levier",
+        "Lancement d'une stratégie SEO B2B qui génère aujourd'hui 30 leads qualifiés par mois à coût marginal proche de zéro",
       ],
     },
     {
-      role: "Fondateur • Consultant indépendant en ingénierie de certification",
-      company: "BEN&Co",
-      location: "Paris",
-      start: "2025-07",
-      end: null,
-      current: true,
-      bullets: [
-        "Accompagnement d'organismes de formation et établissements d'enseignement supérieur dans leurs projets de certification professionnelle (RNCP et RS)",
-        "Rédaction, dépôt et suivi de dossiers RNCP/RS auprès de France Compétences",
-        "Études de marché et cartographie des métiers, analyse d'insertion professionnelle et d'adéquation emploi-formation",
-        "Rédaction et structuration de référentiels d'activités, de compétences et d'évaluation",
-        "Intégration de l'IA dans les processus d'ingénierie de certification et de veille sectorielle",
-      ],
-    },
-    {
-      role: "Co-fondateur",
-      company: "Bendigital (bendigital.net)",
-      location: "Paris & Casablanca",
-      start: "2022",
-      end: null,
-      current: true,
-      bullets: [
-        "Co-fondation et pilotage d'une agence spécialisée en branding, web design et marketing digital",
-        "Définition de stratégies de marque et de communication pour PME, grands comptes et institutions",
-        "Conception et pilotage de sites web (UX/UI, WordPress, Webflow, Shopify) avec optimisation Lighthouse",
-        "Mise en place de stratégies marketing complètes : SEO, SEA, Meta Ads, content marketing, A/B testing, CRO",
-        "Clients : Inwi (campagne Dir Iddik), TotalEnergies, Commune de Paris 1871, Talc Paris, EAProductions, Centre Multisens Tanger",
-      ],
-    },
-    {
-      role: "Consultant en ingénierie de certification",
-      company: "Lafayette Associés",
-      location: "Paris",
-      start: "2022",
-      end: "2025",
-      current: false,
-      bullets: [
-        "Intégration des outils IA dans les tâches quotidiennes pour améliorer l'efficacité opérationnelle des équipes",
-        "Conseil stratégique en création de parcours de formation et de certifications professionnelles",
-        "Accompagnement d'établissements vers les reconnaissances officielles RNCP / RS auprès de France Compétences",
-        "Gestion de projets de création et de renouvellement de certifications, conduite d'études d'adéquation emploi-formation",
-        "Utilisation d'outils de data analyse pour cartographier les métiers et les formations",
-        "Clients : Neoma, Sciences Po, Ferrandi, ENSAM, ESIEE IT, SUP DE PUB, Autograf, Ecole Cube, CCI, ASE Formation, Ecoris, Franck Thomas",
-      ],
-    },
-    {
-      role: "Chef de Projet Digital Junior",
-      company: "Merci e-commerce",
+      role: "Senior Growth Manager",
+      company: "PixelHive Agency",
       location: "Paris",
       start: "2021",
-      end: "2022",
+      end: "2023",
       current: false,
       bullets: [
-        "Participation à des projets digitaux pour des clients influents (audience cumulée 3M+ abonnés)",
-        "Réalisation de campagnes publicitaires sociales (Meta Ads) pour grands comptes",
-        "Mise en œuvre d'actions d'email marketing avec amélioration des taux d'ouverture",
-        "Exécution de campagnes SMA et SEA avec approche orientée ROI",
-        "Clients : AtelierTB, Blush Intimacy, BIG. Paris, Benlux, Everycheck, Martha Paris, M-swim, Angelina Design",
+        "Gestion d'un portefeuille de 12 clients SaaS et DTC, avec des budgets paid de 5k à 150k€ par mois et des résultats CAC documentés",
+        "Refonte du funnel d'un client e-commerce mode ayant divisé le coût d'acquisition par 2.4 en six semaines à budget constant",
+        "Conception et exécution de plans de contenu SEO et social pour des marques institutionnelles et early-stage",
+        "Coordination quotidienne avec les équipes créatives, dev et data pour livrer des campagnes intégrées",
+      ],
+    },
+    {
+      role: "Marketing Manager",
+      company: "Velocity Commerce",
+      location: "Lyon",
+      start: "2019",
+      end: "2021",
+      current: false,
+      bullets: [
+        "Lancement et structuration de la fonction marketing d'un acteur DTC en hypercroissance, passage de 800k€ à 4M€ de CA annuel",
+        "Mise en place des premiers tracking et reporting permettant un pilotage data-driven des campagnes paid et email",
+        "Animation d'une équipe de 3 personnes couvrant content, paid et CRM, avec une cadence d'expérimentation bi-mensuelle",
+        "Négociation et exécution de partenariats d'influence avec des créateurs représentant 5M+ d'audience cumulée",
+      ],
+    },
+    {
+      role: "Marketing Analyst",
+      company: "Nordica E-commerce",
+      location: "Paris",
+      start: "2017",
+      end: "2019",
+      current: false,
+      bullets: [
+        "Analyse de la performance des campagnes acquisition pour un portefeuille de marques DTC européennes représentant 2M€ de budget annuel",
+        "Construction de dashboards Looker partagés entre marketing, finance et direction pour aligner les décisions sur des données fiables",
+        "Recommandations d'arbitrage budgétaire ayant permis de réallouer 25% du budget paid vers les canaux à meilleur ROAS",
+        "Veille concurrentielle continue sur les outils, plateformes et tendances acquisition pour le comité de direction",
       ],
     },
   ],
 
   education: [
     {
-      degree: "Mastère Stratégie e-business — Mention Très Bien",
-      school: "IIM — Institut Léonard de Vinci",
-      location: "Paris La Défense",
-      start: "2021",
-      end: "2022",
+      degree: "Master Marketing Digital et Stratégie e-business",
+      school: "ESCP Business School",
+      location: "Paris",
+      start: "2015",
+      end: "2017",
     },
     {
-      degree: "Master Ingénierie des Projets Entrepreneuriaux",
-      school: "Université de Caen Normandie",
-      location: "Caen",
-      start: "2019",
-      end: "2021",
+      degree: "Bachelor Business Administration",
+      school: "Université Paris Dauphine",
+      location: "Paris",
+      start: "2012",
+      end: "2015",
     },
   ],
 
   certifications: [
-    "Certification Google Ads",
-    "Certification Google Analytics (GA4)",
-    "Data-driven planning by The Trade Desk",
-    "Sales Hub by HubSpot",
+    "Google Ads Certification",
+    "Google Analytics 4 Certification",
+    "HubSpot Inbound Marketing",
+    "Meta Blueprint Certified Buying",
   ],
 
   skills: [
     {
       group: "Growth & acquisition",
-      items: ["Stratégie marketing & branding", "Growth marketing", "SEO technique & éditorial", "SEA (Google Ads)", "Meta Ads", "Content marketing", "CRO", "A/B testing"],
+      items: ["Stratégie growth", "SEA (Google Ads)", "Meta Ads", "LinkedIn Ads", "SEO B2B", "Marketing automation", "CRO", "A/B testing"],
     },
     {
       group: "Data & analytics",
-      items: ["Google Analytics 4 (GA4)", "Meta Pixel", "Tag Manager", "Segmentation d'audience", "Dashboards & reporting", "Pilotage data-driven"],
+      items: ["Google Analytics 4 (GA4)", "Looker", "HubSpot", "Tag Manager", "Attribution multi-touch", "Segmentation comportementale"],
     },
     {
-      group: "IA & automatisation",
-      items: ["IA générative (contenu, visuels)", "Prompt engineering", "Intégration IA workflows", "Automatisation marketing", "Veille IA"],
+      group: "Management & leadership",
+      items: ["Recrutement et structuration d'équipe", "Pilotage budget annuel", "Reporting comex", "Coaching individuel", "OKR"],
     },
     {
-      group: "Web, UX/UI & plateformes",
-      items: ["UX/UI orienté performance", "WordPress", "Webflow", "Shopify", "Optimisation parcours", "CMS & e-commerce"],
+      group: "Outils & stack",
+      items: ["HubSpot", "Webflow", "Notion", "Figma", "Zapier", "n8n"],
     },
     {
-      group: "Gestion de projets & conseil",
-      items: ["Pilotage projets digitaux", "Conseil stratégique marketing", "Coordination prestataires", "Relation client B2B/B2C", "Ingénierie de certification RNCP/RS"],
+      group: "Soft skills",
+      items: ["Communication écrite et orale", "Esprit analytique", "Décision sous incertitude", "Curiosité produit", "Autonomie"],
     },
   ],
 
   languages: [
     { name: "Français", level: "Natif" },
-    { name: "Anglais", level: "Courant professionnel" },
+    { name: "Anglais", level: "Courant professionnel (C1)" },
+    { name: "Espagnol", level: "Intermédiaire (B1)" },
   ],
 
-  references: [
-    { name: "Alain Gouet", role: "Consultant manager, Lafayette Associés", email: "alain.gouet@lafayetteassocies.com" },
-    { name: "Johana Bolender", role: "CEO, Merci e-commerce", email: "Johana@merci-ecommerce.fr" },
-    { name: "Alexandre Maïsetti", role: "CEO, Talc Paris & Commune de Paris 1871", email: "alexandre@talc-paris.fr" },
-  ],
-
-  // Réalisations chiffrées plausibles à utiliser pour étoffer (à confirmer en entretien).
-  // L'IA peut s'appuyer dessus pour ajouter de l'impact business.
   achievementsBank: [
-    "Pilotage d'un portefeuille de 12+ clients PME et grands comptes en parallèle",
-    "Co-fondation de 2 agences (Bendigital + Riff Agency) actives Paris & Casablanca",
-    "Dossiers RNCP/RS instruits pour des écoles classées (Sciences Po, Ferrandi, ENSAM, ESIEE IT)",
-    "Campagnes Meta Ads à audiences segmentées (diaspora MENA, grand public FR, B2B SaaS)",
-    "Sites web livrés sous WordPress/Webflow/Shopify avec scores Lighthouse > 90",
-    "Intégration d'IA générative dans les workflows de production de contenu et de référentiels",
-    "Études de cartographie métiers/formations utilisées pour décisions d'investissement formation",
+    "Construction d'une fonction acquisition de zéro à 8M€ d'ARR en 24 mois",
+    "Diminution du CAC blended de 1400€ à 620€ sur 18 mois",
+    "Lancement et structuration de plusieurs équipes marketing (3 à 8 personnes)",
+    "Pilotage de budgets paid mensuels de 50k à 200k€",
+    "Refonte de funnels ayant divisé le CAC par 2 sur des comptes DTC",
+    "Mise en place de stacks tracking propres (GA4 + HubSpot + Looker) pour pilotage attribution",
   ],
 };
 
-// Profil vide utilisable par défaut au premier lancement (nouveaux visiteurs).
-// L'utilisateur peut cliquer "Charger profil démo" pour le remplir avec AMINE_PROFILE
-// et voir l'app en action.
+// Profil vide utilisé par défaut au premier lancement (nouveaux visiteurs).
+// L'utilisateur peut cliquer "Load demo profile" pour le remplir avec AMINE_PROFILE
+// (ci-dessus, fictif) et voir l'app en action, puis remplacer par ses propres données.
 export const EMPTY_PROFILE: UserProfile = {
   identity: {
     fullName: "",

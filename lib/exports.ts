@@ -13,41 +13,53 @@ import {
   AlignmentType,
   BorderStyle,
 } from "docx";
-import type { CVDocument, CoverLetter, CVTemplate, OutputLanguage } from "./types";
-import { AMINE_PROFILE } from "./profile";
+import type { CVDocument, CoverLetter, CVTemplate, OutputLanguage, UserProfile } from "./types";
 import { computeCVDensityScale } from "./density";
 import { tCV, tLetter } from "./i18n";
+
+type Identity = UserProfile["identity"];
+
+const EMPTY_IDENTITY: Identity = {
+  fullName: "",
+  title: "",
+  location: "",
+  email: "",
+  phone: "",
+  linkedin: "",
+  websites: [],
+};
 
 const A4_W = 595;
 const A4_H = 842;
 
-function contactLine(): string {
-  const p = AMINE_PROFILE.identity;
-  return `${p.email}  ·  ${p.phone}  ·  ${p.location}  ·  ${p.linkedin}`;
+function contactLine(p: Identity): string {
+  const parts = [p.email, p.phone, p.location, p.linkedin].filter(Boolean);
+  return parts.join("  ·  ");
 }
 
 export function cvToPdf(
   cv: CVDocument,
   template: CVTemplate = "classic",
-  lang: OutputLanguage = "fr"
+  lang: OutputLanguage = "fr",
+  identity: Identity = EMPTY_IDENTITY
 ): Uint8Array {
   const scale = computeCVDensityScale(cv);
   const t = tCV(lang);
   switch (template) {
     case "modern":
-      return cvPdfModern(cv, scale, t);
+      return cvPdfModern(cv, scale, t, identity);
     case "minimal":
-      return cvPdfMinimal(cv, scale, t);
+      return cvPdfMinimal(cv, scale, t, identity);
     case "classic":
     default:
-      return cvPdfClassic(cv, scale, t);
+      return cvPdfClassic(cv, scale, t, identity);
   }
 }
 
 type CVT = ReturnType<typeof tCV>;
 
 // =================== CLASSIC PDF ===================
-function cvPdfClassic(cv: CVDocument, s: number, t: CVT): Uint8Array {
+function cvPdfClassic(cv: CVDocument, s: number, t: CVT, identity: Identity): Uint8Array {
   const doc = new jsPDF({ unit: "pt", format: "a4" });
   const M = 40 * Math.min(s, 1.1); // marge légèrement scalée
   const W = A4_W;
@@ -84,7 +96,7 @@ function cvPdfClassic(cv: CVDocument, s: number, t: CVT): Uint8Array {
 
   doc.setFontSize(F.contact);
   doc.setTextColor(105, 105, 105);
-  doc.text(contactLine(), M, y);
+  doc.text(contactLine(identity), M, y);
   y += F.contact * 0.5;
   doc.setDrawColor(20, 20, 20);
   doc.setLineWidth(1.3);
@@ -186,7 +198,7 @@ function cvPdfClassic(cv: CVDocument, s: number, t: CVT): Uint8Array {
 }
 
 // =================== MODERN PDF ===================
-function cvPdfModern(cv: CVDocument, s: number, t: CVT): Uint8Array {
+function cvPdfModern(cv: CVDocument, s: number, t: CVT, identity: Identity): Uint8Array {
   const doc = new jsPDF({ unit: "pt", format: "a4" });
   const M = 42 * Math.min(s, 1.1);
   const W = A4_W;
@@ -224,7 +236,7 @@ function cvPdfModern(cv: CVDocument, s: number, t: CVT): Uint8Array {
 
   doc.setFontSize(F.contact);
   doc.setTextColor(105, 105, 105);
-  doc.text(contactLine(), M, y);
+  doc.text(contactLine(identity), M, y);
   y += F.contact * 1.6;
 
   doc.setTextColor(35, 35, 35);
@@ -315,7 +327,7 @@ function cvPdfModern(cv: CVDocument, s: number, t: CVT): Uint8Array {
 }
 
 // =================== MINIMAL PDF ===================
-function cvPdfMinimal(cv: CVDocument, s: number, t: CVT): Uint8Array {
+function cvPdfMinimal(cv: CVDocument, s: number, t: CVT, identity: Identity): Uint8Array {
   const doc = new jsPDF({ unit: "pt", format: "a4" });
   const M = 58 * Math.min(s, 1.05);
   const W = A4_W;
@@ -353,7 +365,7 @@ function cvPdfMinimal(cv: CVDocument, s: number, t: CVT): Uint8Array {
   y += F.headline * 1.4;
 
   doc.setFontSize(F.contact);
-  doc.text(contactLine(), M, y);
+  doc.text(contactLine(identity), M, y);
   y += F.contact * 2;
 
   doc.setFontSize(F.summary);
@@ -447,18 +459,19 @@ function cvPdfMinimal(cv: CVDocument, s: number, t: CVT): Uint8Array {
 export async function cvToDocx(
   cv: CVDocument,
   template: CVTemplate = "classic",
-  lang: OutputLanguage = "fr"
+  lang: OutputLanguage = "fr",
+  identity: Identity = EMPTY_IDENTITY
 ): Promise<Uint8Array> {
   const s = computeCVDensityScale(cv);
   const t = tCV(lang);
   switch (template) {
     case "modern":
-      return docxModern(cv, s, t);
+      return docxModern(cv, s, t, identity);
     case "minimal":
-      return docxMinimal(cv, s, t);
+      return docxMinimal(cv, s, t, identity);
     case "classic":
     default:
-      return docxClassic(cv, s, t);
+      return docxClassic(cv, s, t, identity);
   }
 }
 
@@ -471,8 +484,8 @@ function spc(base: number, s: number): number {
   return Math.max(40, Math.round(base * s));
 }
 
-async function docxClassic(cv: CVDocument, s: number, t: CVT): Promise<Uint8Array> {
-  const p = AMINE_PROFILE.identity;
+async function docxClassic(cv: CVDocument, s: number, t: CVT, identity: Identity): Promise<Uint8Array> {
+  const p = identity;
   const children: Paragraph[] = [];
 
   children.push(new Paragraph({
@@ -555,8 +568,8 @@ async function docxClassic(cv: CVDocument, s: number, t: CVT): Promise<Uint8Arra
   return packDocx(children, "Calibri");
 }
 
-async function docxModern(cv: CVDocument, s: number, t: CVT): Promise<Uint8Array> {
-  const p = AMINE_PROFILE.identity;
+async function docxModern(cv: CVDocument, s: number, t: CVT, identity: Identity): Promise<Uint8Array> {
+  const p = identity;
   const children: Paragraph[] = [];
   const ACCENT = "047857";
 
@@ -639,8 +652,8 @@ async function docxModern(cv: CVDocument, s: number, t: CVT): Promise<Uint8Array
   return packDocx(children, "Calibri");
 }
 
-async function docxMinimal(cv: CVDocument, s: number, t: CVT): Promise<Uint8Array> {
-  const p = AMINE_PROFILE.identity;
+async function docxMinimal(cv: CVDocument, s: number, t: CVT, identity: Identity): Promise<Uint8Array> {
+  const p = identity;
   const children: Paragraph[] = [];
 
   children.push(new Paragraph({
@@ -724,7 +737,7 @@ function pushSection(children: Paragraph[], title: string, color: string, s: num
 
 async function packDocx(children: Paragraph[], font: string): Promise<Uint8Array> {
   const doc = new Document({
-    creator: "Amine Job Tool",
+    creator: "Job Tool",
     styles: { default: { document: { run: { font } } } },
     sections: [{
       properties: { page: { margin: { top: 720, bottom: 720, left: 900, right: 900 } } },
@@ -741,9 +754,12 @@ async function packDocx(children: Paragraph[], font: string): Promise<Uint8Array
 
 export function letterToPdf(
   letter: CoverLetter,
-  applicant = "Amine Ben Bouazza",
-  lang: OutputLanguage = "fr"
+  applicant?: string,
+  lang: OutputLanguage = "fr",
+  identity: Identity = EMPTY_IDENTITY
 ): Uint8Array {
+  // Use the signature from the letter itself if no applicant override provided
+  const applicantName = applicant || letter.signature || identity.fullName || "Candidate";
   const doc = new jsPDF({ unit: "pt", format: "a4" });
   const M = 70;
   const W = A4_W;
@@ -753,15 +769,20 @@ export function letterToPdf(
 
   doc.setFont("helvetica", "bold");
   doc.setFontSize(15);
-  doc.text(applicant, M, y);
+  doc.text(applicantName, M, y);
   y += 14;
 
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(9);
-  doc.setTextColor(110, 110, 110);
-  doc.text(`${AMINE_PROFILE.identity.email}  ·  ${AMINE_PROFILE.identity.phone}`, M, y);
-  doc.setTextColor(0, 0, 0);
-  y += 26;
+  const contactBits = [identity.email, identity.phone].filter(Boolean).join("  ·  ");
+  if (contactBits) {
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(9);
+    doc.setTextColor(110, 110, 110);
+    doc.text(contactBits, M, y);
+    doc.setTextColor(0, 0, 0);
+    y += 26;
+  } else {
+    y += 12;
+  }
 
   doc.setFont("helvetica", "italic");
   doc.setFontSize(10);
@@ -796,8 +817,13 @@ export function letterToPdf(
   return doc.output("arraybuffer") as unknown as Uint8Array;
 }
 
-export async function letterToDocx(letter: CoverLetter, lang: OutputLanguage = "fr"): Promise<Uint8Array> {
+export async function letterToDocx(
+  letter: CoverLetter,
+  lang: OutputLanguage = "fr",
+  identity: Identity = EMPTY_IDENTITY
+): Promise<Uint8Array> {
   const subjectLabel = tLetter(lang).subject;
+  const contactBits = [identity.email, identity.phone].filter(Boolean).join(" · ");
   const para = (text: string, opts: { bold?: boolean; size?: number } = {}) =>
     new Paragraph({
       spacing: { after: 220 },
@@ -806,14 +832,14 @@ export async function letterToDocx(letter: CoverLetter, lang: OutputLanguage = "
     });
 
   const doc = new Document({
-    creator: "Amine Job Tool",
+    creator: "Job Tool",
     styles: { default: { document: { run: { font: "Calibri" } } } },
     sections: [{
       properties: { page: { margin: { top: 1100, bottom: 1100, left: 1200, right: 1200 } } },
       children: [
         new Paragraph({ children: [new TextRun({ text: letter.signature, bold: true, size: 28 })] }),
         new Paragraph({
-          children: [new TextRun({ text: `${AMINE_PROFILE.identity.email} · ${AMINE_PROFILE.identity.phone}`, size: 18, color: "71717a" })],
+          children: [new TextRun({ text: contactBits, size: 18, color: "71717a" })],
         }),
         new Paragraph({
           spacing: { after: 280 },

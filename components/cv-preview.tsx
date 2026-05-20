@@ -1,11 +1,9 @@
 "use client";
 
 import type { CVDocument, CVTemplate, OutputLanguage } from "@/lib/types";
-import { AMINE_PROFILE } from "@/lib/profile";
 import { useFitToPage } from "@/hooks/use-fit-to-page";
 import { tCV } from "@/lib/i18n";
-
-const CONTACT = AMINE_PROFILE.identity;
+import { useStore } from "@/lib/store";
 
 export function CVPreview({
   cv,
@@ -16,16 +14,18 @@ export function CVPreview({
   template?: CVTemplate;
   lang?: OutputLanguage;
 }) {
-  const { containerRef, innerRef } = useFitToPage<HTMLDivElement>([cv, template, lang]);
+  const userProfile = useStore((s) => s.userProfile);
+  const contact = userProfile.identity;
+  const { containerRef, innerRef } = useFitToPage<HTMLDivElement>([cv, template, lang, contact]);
   const t = tCV(lang);
 
   return (
     <div className="rounded-lg border bg-white text-zinc-900 shadow-xl mx-auto" style={{ maxWidth: 820 }}>
       <div ref={containerRef} className="aspect-[1/1.414] w-full overflow-hidden relative">
         <div ref={innerRef} className="absolute inset-0 overflow-hidden" style={{ fontSize: "10px" }}>
-          {template === "classic" && <CVClassic cv={cv} t={t} />}
-          {template === "modern" && <CVModern cv={cv} t={t} />}
-          {template === "minimal" && <CVMinimal cv={cv} t={t} />}
+          {template === "classic" && <CVClassic cv={cv} t={t} contact={contact} />}
+          {template === "modern" && <CVModern cv={cv} t={t} contact={contact} />}
+          {template === "minimal" && <CVMinimal cv={cv} t={t} contact={contact} />}
         </div>
       </div>
     </div>
@@ -33,11 +33,16 @@ export function CVPreview({
 }
 
 type T = ReturnType<typeof tCV>;
+type Contact = ReturnType<typeof useStore.getState>["userProfile"]["identity"];
+
+function contactLine(c: Contact): string {
+  return [c.email, c.phone, c.location, c.linkedin].filter(Boolean).join("  ·  ");
+}
 
 // ============================================================
 // CLASSIC — tailles en em, flow naturel, padding scalable
 // ============================================================
-function CVClassic({ cv, t }: { cv: CVDocument; t: T }) {
+function CVClassic({ cv, t, contact }: { cv: CVDocument; t: T; contact: Contact }) {
   return (
     <div className="h-full" style={{ padding: "2.4em 2.6em" }}>
       {/* HEADER */}
@@ -47,7 +52,7 @@ function CVClassic({ cv, t }: { cv: CVDocument; t: T }) {
         </h1>
         <p style={{ fontSize: "1.2em", color: "#3f3f46", marginTop: "0.15em" }}>{cv.headline}</p>
         <p style={{ fontSize: "0.92em", color: "#71717a", marginTop: "0.2em" }}>
-          {CONTACT.email}  ·  {CONTACT.phone}  ·  {CONTACT.location}  ·  {CONTACT.linkedin}
+          {contactLine(contact)}
         </p>
         <div style={{ borderTop: "2px solid #18181b", marginTop: "0.4em" }} />
       </header>
@@ -128,7 +133,7 @@ function Sec({ title }: { title: string }) {
 // ============================================================
 // MODERN — accent vert, typo plus marquée
 // ============================================================
-function CVModern({ cv, t }: { cv: CVDocument; t: T }) {
+function CVModern({ cv, t, contact }: { cv: CVDocument; t: T; contact: Contact }) {
   return (
     <div className="h-full" style={{ padding: "2.4em 2.6em" }}>
       <header style={{ marginBottom: "0.9em" }}>
@@ -140,7 +145,7 @@ function CVModern({ cv, t }: { cv: CVDocument; t: T }) {
           <p style={{ fontSize: "1.15em", fontWeight: 500, color: "#3f3f46" }}>{cv.headline}</p>
         </div>
         <p style={{ fontSize: "0.9em", color: "#71717a", marginTop: "0.3em" }}>
-          {CONTACT.email}  ·  {CONTACT.phone}  ·  {CONTACT.location}  ·  {CONTACT.linkedin}
+          {contactLine(contact)}
         </p>
       </header>
 
@@ -225,7 +230,7 @@ function SecMod({ title }: { title: string }) {
 // ============================================================
 // MINIMAL — light, beaucoup d'espace, dates en colonne
 // ============================================================
-function CVMinimal({ cv, t }: { cv: CVDocument; t: T }) {
+function CVMinimal({ cv, t, contact }: { cv: CVDocument; t: T; contact: Contact }) {
   return (
     <div className="h-full" style={{ padding: "3em 3.4em", fontWeight: 300 }}>
       <header style={{ marginBottom: "1.4em" }}>
@@ -236,7 +241,7 @@ function CVMinimal({ cv, t }: { cv: CVDocument; t: T }) {
           {cv.headline}
         </p>
         <p style={{ fontSize: "0.88em", color: "#71717a", marginTop: "0.3em" }}>
-          {CONTACT.email} · {CONTACT.phone} · {CONTACT.location} · {CONTACT.linkedin}
+          {contactLine(contact)}
         </p>
       </header>
 

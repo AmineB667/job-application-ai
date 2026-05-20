@@ -133,6 +133,7 @@ export default function Home() {
         payload,
         template: cvTemplate,
         language: result?.meta.language ?? outputLanguage,
+        identity: userProfile.identity,
       }),
     });
     if (!res.ok) {
@@ -143,10 +144,11 @@ export default function Home() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
+    const baseName = (userProfile.identity.fullName || "candidate").replace(/\s+/g, "_");
     a.download =
       type === "cv"
-        ? `Amine_Ben_Bouazza_CV.${format}`
-        : `Amine_Ben_Bouazza_Lettre.${format}`;
+        ? `${baseName}_CV.${format}`
+        : `${baseName}_Letter.${format}`;
     document.body.appendChild(a);
     a.click();
     a.remove();
@@ -464,7 +466,7 @@ function NewApplicationView(p: NewProps) {
           <div className="space-y-1.5">
             <label className="text-xs font-medium">URL LinkedIn de vous (optionnel)</label>
             <Input
-              placeholder="https://www.linkedin.com/in/aminebenbouazza"
+              placeholder="https://www.linkedin.com/in/your-handle"
               value={p.linkedinUrl}
               onChange={(e) => p.onLinkedinUrl(e.target.value)}
             />

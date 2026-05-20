@@ -31,7 +31,7 @@ export async function fetchJobOfferFromUrl(url: string): Promise<string> {
   const res = await fetch(url, {
     headers: {
       "User-Agent":
-        "Mozilla/5.0 (compatible; AmineJobTool/1.0; +https://riff.business)",
+        "Mozilla/5.0 (compatible; JobApplicationAI/1.0)",
     },
   });
   if (!res.ok) throw new Error(`Impossible de récupérer l'offre (HTTP ${res.status})`);

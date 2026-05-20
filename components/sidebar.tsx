@@ -25,7 +25,7 @@ export function Sidebar({ view, onView }: { view: View; onView: (v: View) => voi
         </div>
         <div className="leading-tight">
           <p className="text-sm font-semibold">Job Tool</p>
-          <p className="text-[10px] text-muted-foreground">Amine Ben Bouazza</p>
+          <p className="text-[10px] text-muted-foreground">CV + cover letter AI</p>
         </div>
       </div>
       <nav className="space-y-0.5">

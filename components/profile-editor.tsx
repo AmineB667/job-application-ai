@@ -102,7 +102,7 @@ export function ProfileEditor() {
         <CardContent className="flex flex-wrap gap-2">
           <Button size="sm" onClick={() => { setProfile(AMINE_PROFILE); toast.success("Demo profile loaded"); }}>
             <Sparkles className="h-3.5 w-3.5" />
-            Load Amine Ben Bouazza demo
+            Load demo profile
           </Button>
           <Button size="sm" variant="outline" onClick={() => { setProfile(EMPTY_PROFILE); toast.success("Profile cleared"); }}>
             Start fresh
