@@ -6,6 +6,12 @@ import { Toaster } from "sonner";
 export const metadata: Metadata = {
   title: "Job Application AI",
   description: "Free AI tool to optimize your CV and write personalized cover letters in FR or EN. ATS scoring, 3 templates, PDF/DOCX export.",
+  icons: {
+    icon: [
+      { url: "/icon.svg", type: "image/svg+xml" },
+    ],
+    apple: "/icon.svg",
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

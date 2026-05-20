@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 100" fill="none">
+  <!-- Document page shape -->
+  <path d="M8 4 H58 L74 20 V90 H8 Z" fill="currentColor"/>
+  <!-- Fold triangle (lighter) -->
+  <path d="M58 4 L58 20 L74 20 Z" fill="currentColor" opacity="0.4"/>
+
+  <!-- Person head (white cutout) -->
+  <circle cx="40" cy="30" r="11" fill="white"/>
+  <!-- Person shoulders (white cutout) -->
+  <path d="M20 58 Q20 44 40 44 Q60 44 60 58 Z" fill="white"/>
+
+  <!-- Text lines on document (white) -->
+  <rect x="16" y="63" width="44" height="4" rx="2" fill="white" opacity="0.55"/>
+  <rect x="16" y="71" width="32" height="4" rx="2" fill="white" opacity="0.55"/>
+
+  <!-- Briefcase body -->
+  <rect x="42" y="56" width="52" height="38" rx="4" fill="currentColor"/>
+  <!-- Briefcase handle -->
+  <path d="M56 56 L56 49 Q56 44 62 44 L76 44 Q82 44 82 49 L82 56" stroke="currentColor" stroke-width="5" fill="none" stroke-linecap="round"/>
+  <!-- Briefcase latch -->
+  <rect x="60" y="70" width="16" height="10" rx="2" fill="white"/>
+  <!-- Briefcase center line -->
+  <line x1="42" y1="75" x2="94" y2="75" stroke="white" stroke-width="1.5" opacity="0.4"/>
+
+  <!-- Text: Job Application AI -->
+  <text x="106" y="66" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="26" font-weight="800" fill="currentColor" letter-spacing="-0.5">Job Application AI</text>
+</svg>

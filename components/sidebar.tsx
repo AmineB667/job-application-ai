@@ -1,7 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { LayoutDashboard, Sparkles, FileText, Mail, History, Settings2, Briefcase, User } from "lucide-react";
+import { LayoutDashboard, Sparkles, FileText, Mail, History, Settings2, User } from "lucide-react";
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { useStore } from "@/lib/store";
 import { useT } from "@/hooks/use-t";
@@ -25,14 +26,15 @@ export function Sidebar({ view, onView }: { view: View; onView: (v: View) => voi
 
   return (
     <aside className="hidden lg:flex h-screen w-60 flex-col border-r bg-card/40 px-4 py-6 sticky top-0">
-      <div className="flex items-center gap-2 px-2 mb-8">
-        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-          <Briefcase className="h-4 w-4" />
-        </div>
-        <div className="leading-tight">
-          <p className="text-sm font-semibold">Job Tool</p>
-          <p className="text-[10px] text-muted-foreground">{t.brand}</p>
-        </div>
+      <div className="flex items-center px-2 mb-8">
+        <Image
+          src="/logo.svg"
+          alt="Job Application AI"
+          width={180}
+          height={53}
+          className="dark:invert"
+          priority
+        />
       </div>
       <nav className="space-y-0.5">
         {items.map((it) => {
