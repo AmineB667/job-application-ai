@@ -5,7 +5,16 @@ import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
   title: "Job Application AI",
-  description: "Free AI tool to optimize your CV and write personalized cover letters in FR or EN. ATS scoring, 3 templates, PDF/DOCX export.",
+  description: "Outil IA gratuit pour optimiser votre CV et rédiger des lettres de motivation personnalisées en FR ou EN. Score ATS, 3 templates, export PDF + DOCX.",
+  metadataBase: new URL("https://jobapplication.fr"),
+  openGraph: {
+    title: "Job Application AI",
+    description: "Analysez votre CV face à une offre, générez un CV ATS-optimisé et une lettre de motivation en 20 secondes.",
+    url: "https://jobapplication.fr",
+    siteName: "Job Application AI",
+    locale: "fr_FR",
+    type: "website",
+  },
   icons: {
     icon: [
       { url: "/icon.svg", type: "image/svg+xml" },
