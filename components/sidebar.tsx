@@ -3,6 +3,7 @@
 import * as React from "react";
 import { LayoutDashboard, Sparkles, FileText, Mail, History, Settings2, User } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { useStore } from "@/lib/store";
 import { useT } from "@/hooks/use-t";
@@ -93,6 +94,14 @@ export function Sidebar({ view, onView }: { view: View; onView: (v: View) => voi
           >
             {t.footer.contact}
           </a>
+        </p>
+        <p>
+          <Link
+            href="/mentions-legales"
+            className="underline underline-offset-2 hover:text-foreground transition-colors"
+          >
+            {t.footer.legal}
+          </Link>
         </p>
       </div>
     </aside>

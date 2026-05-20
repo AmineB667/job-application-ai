@@ -20,6 +20,7 @@ export const UI = {
       privacy:
         "Vos données sont traitées localement. Aucune information personnelle n'est transmise ou conservée.",
       contact: "Contactez-nous",
+      legal: "Mentions légales",
     },
     viewTitles: {
       new: "Nouvelle candidature",
@@ -231,6 +232,7 @@ export const UI = {
       privacy:
         "Your data is processed locally. No personal information is transmitted or stored.",
       contact: "Contact us",
+      legal: "Legal notice",
     },
     viewTitles: {
       new: "New application",
