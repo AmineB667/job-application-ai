@@ -24,14 +24,14 @@ export function Sidebar({ view, onView }: { view: View; onView: (v: View) => voi
 
   return (
     <aside className="hidden lg:flex h-screen w-60 flex-col border-r bg-card/40 px-4 py-6 sticky top-0">
-      <div className="flex items-center px-2 mb-8">
-        <span className="inline-flex bg-white rounded-md px-1.5 py-1">
+      <div className="flex items-center px-1 mb-8">
+        <span className="inline-flex bg-white rounded-lg px-2.5 py-2 w-full justify-center">
           <Image
             src="/logo.png"
             alt="JobApplication.fr"
-            width={180}
-            height={44}
-            className="h-11 w-auto"
+            width={200}
+            height={48}
+            className="h-10 w-auto max-w-full"
             priority
           />
         </span>

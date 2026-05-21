@@ -13,16 +13,16 @@ interface SiteHeaderProps {
 export function SiteHeader({ activePage }: SiteHeaderProps) {
   return (
     <header className="border-b bg-card/80 backdrop-blur sticky top-0 z-30">
-      <div className="container max-w-6xl flex items-center justify-between px-6 h-14">
+      <div className="container max-w-6xl flex items-center justify-between px-6 h-16">
         {/* Logo — clickable, returns home */}
         <Link href="/" className="flex items-center shrink-0">
-          <span className="inline-flex bg-white rounded-md px-2 py-1">
+          <span className="inline-flex bg-white rounded-lg px-2.5 py-1.5">
             <Image
               src="/logo.png"
               alt="JobApplication.fr"
-              width={180}
-              height={44}
-              className="h-11 w-auto"
+              width={200}
+              height={48}
+              className="h-8 w-auto sm:h-10 lg:h-12"
               priority
             />
           </span>

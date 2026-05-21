@@ -1,19 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
   <rect width="32" height="32" rx="7" fill="#111827"/>
-  <defs>
-    <linearGradient id="fi1" x1="10" y1="4" x2="10" y2="28" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#9ca3af"/>
-      <stop offset="100%" stop-color="#ffffff"/>
-    </linearGradient>
-    <linearGradient id="fi2" x1="19" y1="4" x2="19" y2="28" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#64748b"/>
-      <stop offset="100%" stop-color="#94a3b8"/>
-    </linearGradient>
-  </defs>
-  <!-- J back -->
-  <path d="M 19,4 L 19,21 Q 19,28 13,28 Q 10,28 10,24"
-        stroke="url(#fi2)" stroke-width="6" stroke-linecap="round" fill="none"/>
-  <!-- J front -->
-  <path d="M 11,4 L 11,21 Q 11,28 5,28 Q 2,28 2,24"
-        stroke="url(#fi1)" stroke-width="6" stroke-linecap="round" fill="none"/>
+  <!-- J: single bold stroke, vertical then curve left -->
+  <path d="M 21,5 L 21,21 Q 21,28 13,28 Q 7,28 7,22"
+        stroke="white" stroke-width="5.5" stroke-linecap="round" fill="none"/>
+  <!-- Top serif bar -->
+  <line x1="15" y1="5" x2="24" y2="5"
+        stroke="white" stroke-width="4.5" stroke-linecap="round"/>
 </svg>
