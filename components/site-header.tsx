@@ -20,8 +20,8 @@ export function SiteHeader({ activePage }: SiteHeaderProps) {
             <Image
               src="/logo.png"
               alt="JobApplication.fr"
-              width={200}
-              height={48}
+              width={600}
+              height={124}
               className="h-8 w-auto sm:h-10 lg:h-12"
               priority
             />

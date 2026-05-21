@@ -29,8 +29,8 @@ export function Sidebar({ view, onView }: { view: View; onView: (v: View) => voi
           <Image
             src="/logo.png"
             alt="JobApplication.fr"
-            width={200}
-            height={48}
+            width={600}
+            height={124}
             className="h-10 w-auto max-w-full"
             priority
           />
