@@ -3,12 +3,10 @@ import { NextRequest, NextResponse } from "next/server";
 const RECIPIENT = "benbouazzamine@gmail.com";
 
 // Resend "from" address:
-//   → With verified domain (jobapplication.fr verified in Resend dashboard):
+//   → "onboarding@resend.dev" works on free plan when TO = your Resend account email
+//   → Once jobapplication.fr is verified in Resend dashboard, switch to:
 //       "JobApplication.fr <contact@jobapplication.fr>"
-//   → Without verified domain (testing only):
-//       "onboarding@resend.dev"  ← works only when TO is your own Resend account email
-const FROM_ADDRESS = "JobApplication.fr <contact@jobapplication.fr>";
-// If domain not yet verified in Resend, temporarily replace with: "onboarding@resend.dev"
+const FROM_ADDRESS = "onboarding@resend.dev";
 
 export async function POST(req: NextRequest) {
   try {
@@ -19,8 +17,8 @@ export async function POST(req: NextRequest) {
     }
 
     if (!process.env.RESEND_API_KEY) {
-      console.warn("⚠️  RESEND_API_KEY not set — email not sent. Add it to .env.local");
-      return NextResponse.json({ ok: true });
+      console.error("❌ RESEND_API_KEY not set in .env.local — email not sent.");
+      return NextResponse.json({ error: "Configuration email manquante." }, { status: 500 });
     }
 
     const body = {
@@ -63,15 +61,14 @@ export async function POST(req: NextRequest) {
     const data = await res.json().catch(() => ({}));
 
     if (!res.ok) {
-      console.error("❌ Resend error:", res.status, data);
-      console.error(
-        "💡 If you see 'domain not verified': go to resend.com/domains and verify jobapplication.fr"
+      console.error("❌ Resend error:", res.status, JSON.stringify(data));
+      return NextResponse.json(
+        { error: "Erreur lors de l'envoi. Essayez par email directement." },
+        { status: 500 }
       );
-      // Still return OK so the UX doesn't show an error — message was received in logs
-      return NextResponse.json({ ok: true });
     }
 
-    console.log("✅ Email sent via Resend:", data.id);
+    console.log("✅ Email sent via Resend, id:", data.id);
     return NextResponse.json({ ok: true });
   } catch (err) {
     console.error("Contact route error:", err);
