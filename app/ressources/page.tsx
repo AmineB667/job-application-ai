@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ARTICLES } from "@/lib/articles";
+import { LanguageSwitcher } from "@/components/language-switcher";
 
 export const metadata: Metadata = {
   title: "Ressources — CV, ATS & IA pour l'emploi | Job Application AI",
@@ -41,13 +42,14 @@ export default function RessourcesPage() {
           <Link href="/" className="font-bold text-sm hover:text-primary transition-colors">
             ← Job Application AI
           </Link>
-          <nav className="flex items-center gap-6 text-sm">
+          <nav className="flex items-center gap-4 text-sm">
             <Link href="/ressources" className="font-semibold text-primary">
               Ressources
             </Link>
             <Link href="/contact" className="text-muted-foreground hover:text-foreground transition-colors">
               Contact
             </Link>
+            <LanguageSwitcher />
           </nav>
         </div>
       </header>

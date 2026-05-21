@@ -1,17 +1,32 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 185 50" fill="none">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 215 52" fill="none">
   <defs>
-    <linearGradient id="jgd" x1="40" y1="5" x2="40" y2="45" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#f8fafc"/>
+    <!-- J front (left): white → light gray -->
+    <linearGradient id="j1d" x1="17" y1="5" x2="17" y2="47" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#cbd5e1"/>
+    </linearGradient>
+    <!-- J back (right): light gray → medium gray -->
+    <linearGradient id="j2d" x1="31" y1="5" x2="31" y2="47" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#94a3b8"/>
       <stop offset="100%" stop-color="#64748b"/>
     </linearGradient>
   </defs>
-  <!-- First J: white -->
-  <path d="M 18,5 L 18,33 C 18,44 1,44 1,33" stroke="#f8fafc" stroke-width="6" stroke-linecap="round" fill="none"/>
-  <!-- Second J: gradient light -->
-  <path d="M 40,5 L 40,33 C 40,44 23,44 23,33" stroke="url(#jgd)" stroke-width="6" stroke-linecap="round" fill="none"/>
+
+  <!-- J2 — back -->
+  <path d="M 31,5 L 31,35 Q 31,47 21,47 Q 15,47 15,40"
+        stroke="url(#j2d)" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+
+  <!-- J1 — front -->
+  <path d="M 17,5 L 17,35 Q 17,47 7,47 Q 1,47 1,40"
+        stroke="url(#j1d)" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+
   <!-- Separator -->
-  <line x1="55" y1="9" x2="55" y2="41" stroke="#334155" stroke-width="1"/>
-  <!-- Brand text -->
-  <text x="65" y="23" font-family="-apple-system,BlinkMacSystemFont,Inter,sans-serif" font-size="13.5" font-weight="700" fill="#f8fafc" letter-spacing="-0.3">Job Application</text>
-  <text x="65" y="38" font-family="-apple-system,BlinkMacSystemFont,Inter,sans-serif" font-size="9.5" font-weight="500" fill="#94a3b8" letter-spacing="1.2">AI TOOL</text>
+  <line x1="51" y1="9" x2="51" y2="43" stroke="#334155" stroke-width="1"/>
+
+  <!-- Text -->
+  <text x="61" y="33"
+        font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif"
+        font-size="14" font-weight="800" letter-spacing="-0.4">
+    <tspan fill="#f8fafc">JobApplication</tspan><tspan fill="#94a3b8">.fr</tspan>
+  </text>
 </svg>

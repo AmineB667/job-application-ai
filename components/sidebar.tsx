@@ -28,16 +28,16 @@ export function Sidebar({ view, onView }: { view: View; onView: (v: View) => voi
         <Image
           src="/logo.svg"
           alt="Job Application AI"
-          width={155}
-          height={42}
+          width={160}
+          height={39}
           className="dark:hidden"
           priority
         />
         <Image
           src="/logo-dark.svg"
           alt="Job Application AI"
-          width={155}
-          height={42}
+          width={160}
+          height={39}
           className="hidden dark:block"
           priority
         />

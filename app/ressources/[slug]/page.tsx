@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ARTICLES, getArticleBySlug, getAllSlugs } from "@/lib/articles";
+import { LanguageSwitcher } from "@/components/language-switcher";
 
 type Props = { params: { slug: string } };
 
@@ -53,13 +54,14 @@ export default function ArticlePage({ params }: Props) {
           <Link href="/" className="font-bold text-sm hover:text-primary transition-colors">
             ← Job Application AI
           </Link>
-          <nav className="flex items-center gap-6 text-sm">
+          <nav className="flex items-center gap-4 text-sm">
             <Link href="/ressources" className="text-muted-foreground hover:text-foreground transition-colors">
               Ressources
             </Link>
             <Link href="/contact" className="text-muted-foreground hover:text-foreground transition-colors">
               Contact
             </Link>
+            <LanguageSwitcher />
           </nav>
         </div>
       </header>

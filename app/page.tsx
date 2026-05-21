@@ -26,6 +26,7 @@ import { Badge } from "@/components/ui/badge";
 import { useStore } from "@/lib/store";
 import { useT } from "@/hooks/use-t";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 import type { AnalysisResult, CVTone, LetterTone, CVTemplate, OutputLanguage } from "@/lib/types";
 import { CV_TEMPLATES } from "@/lib/types";
 
@@ -171,6 +172,11 @@ export default function Home() {
             <div>
               <h1 className="text-base font-semibold">
                 {t.viewTitles[view] ?? ""}
+                {view === "new" && (
+                  <span className="ml-2 text-xs font-normal text-muted-foreground hidden sm:inline">
+                    Smarter applications. Better opportunities.
+                  </span>
+                )}
               </h1>
               <p className="text-xs text-muted-foreground">
                 {result?.meta.targetCompany && (
@@ -188,6 +194,13 @@ export default function Home() {
               </p>
             </div>
             <div className="flex items-center gap-2">
+              {/* Nav links */}
+              <Link href="/ressources" className="hidden sm:block text-xs text-muted-foreground hover:text-foreground transition-colors px-2">
+                Ressources
+              </Link>
+              <Link href="/contact" className="hidden sm:block text-xs text-muted-foreground hover:text-foreground transition-colors px-2">
+                Contact
+              </Link>
               {result && view !== "new" && (
                 <Button variant="outline" size="sm" onClick={() => setView("new")}>
                   <Sparkles className="h-3.5 w-3.5" />
