@@ -1,12 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 const RECIPIENT = "benbouazzamine@gmail.com";
-
-// Resend "from" address:
-//   → "onboarding@resend.dev" works on free plan when TO = your Resend account email
-//   → Once jobapplication.fr is verified in Resend dashboard, switch to:
-//       "JobApplication.fr <contact@jobapplication.fr>"
-const FROM_ADDRESS = "onboarding@resend.dev";
+const FROM_ADDRESS = "JobApplication.fr <contact@jobapplication.fr>";
 
 export async function POST(req: NextRequest) {
   try {
@@ -17,7 +12,7 @@ export async function POST(req: NextRequest) {
     }
 
     if (!process.env.RESEND_API_KEY) {
-      console.error("❌ RESEND_API_KEY not set in .env.local — email not sent.");
+      console.error("❌ RESEND_API_KEY not set");
       return NextResponse.json({ error: "Configuration email manquante." }, { status: 500 });
     }
 
@@ -63,12 +58,12 @@ export async function POST(req: NextRequest) {
     if (!res.ok) {
       console.error("❌ Resend error:", res.status, JSON.stringify(data));
       return NextResponse.json(
-        { error: "Erreur lors de l'envoi. Essayez par email directement." },
+        { error: "Erreur lors de l'envoi.", detail: data },
         { status: 500 }
       );
     }
 
-    console.log("✅ Email sent via Resend, id:", data.id);
+    console.log("✅ Email sent, id:", data.id);
     return NextResponse.json({ ok: true });
   } catch (err) {
     console.error("Contact route error:", err);
