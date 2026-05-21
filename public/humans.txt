@@ -1,0 +1,17 @@
+/* TEAM */
+Founder & Developer: Amine Benbouazza
+Contact: benbouazzamine@gmail.com
+LinkedIn: https://www.linkedin.com/in/aminebenbouazza/
+Location: France
+
+/* SITE */
+Last update: 2026/05/21
+Language: French / English
+Standards: HTML5, CSS3, WCAG 2.1 AA
+Components: Next.js, Tailwind CSS, Radix UI, shadcn/ui
+AI: DeepSeek API
+Doctype: HTML5
+IDE: VS Code
+
+/* THANKS */
+Next.js team, Vercel, shadcn, Radix UI, lucide-react

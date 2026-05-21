@@ -5,15 +5,12 @@ import { LayoutDashboard, Sparkles, FileText, Mail, History, Settings2, User } f
 import Image from "next/image";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { useStore } from "@/lib/store";
 import { useT } from "@/hooks/use-t";
 
 export type View = "new" | "ats" | "cv" | "letter" | "history" | "profile" | "settings";
 
 export function Sidebar({ view, onView }: { view: View; onView: (v: View) => void }) {
   const t = useT();
-  const uiLang = useStore((s) => s.uiLang);
-  const setUILang = useStore((s) => s.setUILang);
 
   const items: { id: View; label: string; icon: React.ElementType }[] = [
     { id: "new", label: t.nav.new, icon: Sparkles },
@@ -31,9 +28,17 @@ export function Sidebar({ view, onView }: { view: View; onView: (v: View) => voi
         <Image
           src="/logo.svg"
           alt="Job Application AI"
-          width={180}
-          height={53}
-          className="dark:invert"
+          width={155}
+          height={42}
+          className="dark:hidden"
+          priority
+        />
+        <Image
+          src="/logo-dark.svg"
+          alt="Job Application AI"
+          width={155}
+          height={42}
+          className="hidden dark:block"
           priority
         />
       </div>
@@ -59,32 +64,6 @@ export function Sidebar({ view, onView }: { view: View; onView: (v: View) => voi
         })}
       </nav>
       <div className="mt-auto pt-6 text-[10px] text-muted-foreground px-2 space-y-2">
-        {/* Toggle langue UI */}
-        <div className="flex items-center gap-1">
-          <button
-            onClick={() => setUILang("fr")}
-            className={cn(
-              "rounded px-1.5 py-0.5 text-[10px] font-medium transition-colors",
-              uiLang === "fr"
-                ? "bg-primary text-primary-foreground"
-                : "hover:bg-muted hover:text-foreground"
-            )}
-          >
-            🇫🇷 FR
-          </button>
-          <button
-            onClick={() => setUILang("en")}
-            className={cn(
-              "rounded px-1.5 py-0.5 text-[10px] font-medium transition-colors",
-              uiLang === "en"
-                ? "bg-primary text-primary-foreground"
-                : "hover:bg-muted hover:text-foreground"
-            )}
-          >
-            🇬🇧 EN
-          </button>
-        </div>
-
         {/* Contact */}
         <p>
           <a

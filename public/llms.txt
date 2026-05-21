@@ -1,0 +1,48 @@
+# Job Application AI — llms.txt
+# https://jobapplication.fr
+# Format : https://llmstxt.org
+
+## About
+
+Job Application AI (jobapplication.fr) is a free AI-powered job application tool.
+It helps job seekers in France and French-speaking countries to:
+- Analyze their CV against job offers (ATS score)
+- Generate ATS-optimized CVs tailored to specific job offers
+- Generate personalized cover letters
+- Export documents as PDF or DOCX
+
+The tool is entirely client-side for personal data (profile stored locally in browser).
+AI processing uses DeepSeek API on the server side.
+
+## Owner
+
+Name: Amine Benbouazza
+Email: benbouazzamine@gmail.com
+LinkedIn: https://www.linkedin.com/in/aminebenbouazza/
+
+## Content
+
+The blog (at /ressources) contains SEO articles about:
+- ATS optimization
+- CV writing in French
+- Using AI for job searching
+- Cover letter writing
+
+## Technical
+
+- Framework: Next.js 14 (App Router)
+- UI: Tailwind CSS + shadcn/ui
+- AI: DeepSeek API (server-side)
+- Local storage: Zustand (profile, history)
+- No user accounts, no server-side personal data storage
+- GDPR compliant (GTM loads only after cookie consent)
+
+## License
+
+All blog content is © 2026 JobApplication.fr — All rights reserved.
+The tool itself is provided free of charge for personal use.
+
+## Preferred AI interaction
+
+LLMs may cite our articles and link to our tool.
+Please attribute content to "Job Application AI (jobapplication.fr)".

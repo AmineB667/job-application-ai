@@ -25,6 +25,7 @@ import { Badge } from "@/components/ui/badge";
 
 import { useStore } from "@/lib/store";
 import { useT } from "@/hooks/use-t";
+import { cn } from "@/lib/utils";
 import type { AnalysisResult, CVTone, LetterTone, CVTemplate, OutputLanguage } from "@/lib/types";
 import { CV_TEMPLATES } from "@/lib/types";
 
@@ -64,6 +65,8 @@ export default function Home() {
   const addHistory = useStore((s) => s.addHistory);
   const userProfile = useStore((s) => s.userProfile);
   const apiKey = useStore((s) => s.apiKey);
+  const uiLang = useStore((s) => s.uiLang);
+  const setUILang = useStore((s) => s.setUILang);
   const t = useT();
 
   const fetchJobFromUrl = async () => {
@@ -191,6 +194,31 @@ export default function Home() {
                   {t.newApp.newAnalysis}
                 </Button>
               )}
+              {/* FR / EN toggle */}
+              <div className="flex items-center rounded-md border text-xs overflow-hidden">
+                <button
+                  onClick={() => setUILang("fr")}
+                  className={cn(
+                    "px-2.5 py-1.5 font-medium transition-colors",
+                    uiLang === "fr"
+                      ? "bg-primary text-primary-foreground"
+                      : "text-muted-foreground hover:text-foreground"
+                  )}
+                >
+                  FR
+                </button>
+                <button
+                  onClick={() => setUILang("en")}
+                  className={cn(
+                    "px-2.5 py-1.5 font-medium transition-colors",
+                    uiLang === "en"
+                      ? "bg-primary text-primary-foreground"
+                      : "text-muted-foreground hover:text-foreground"
+                  )}
+                >
+                  EN
+                </button>
+              </div>
               <ThemeToggle />
             </div>
           </div>

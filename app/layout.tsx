@@ -6,21 +6,30 @@ import { CookieBanner } from "@/components/cookie-banner";
 import { GTMLoader, GTMNoScript } from "@/components/gtm-loader";
 
 export const metadata: Metadata = {
-  title: "Job Application AI",
+  title: "Job Application AI — Optimisez votre CV avec l'IA",
   description: "Outil IA gratuit pour optimiser votre CV et rédiger des lettres de motivation personnalisées en FR ou EN. Score ATS, 3 templates, export PDF + DOCX.",
   metadataBase: new URL("https://jobapplication.fr"),
   openGraph: {
-    title: "Job Application AI",
-    description: "Analysez votre CV face à une offre, générez un CV ATS-optimisé et une lettre de motivation en 20 secondes.",
+    title: "Job Application AI — Optimisez votre CV avec l'IA",
+    description: "Analysez votre CV face à une offre, générez un CV ATS-optimisé et une lettre de motivation en 20 secondes. 100 % gratuit.",
     url: "https://jobapplication.fr",
     siteName: "Job Application AI",
     locale: "fr_FR",
     type: "website",
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "Job Application AI — Optimisez votre CV avec l'IA",
+    description: "Score ATS, CV refondu et lettre de motivation en 20 secondes. Gratuit.",
+  },
+  alternates: {
+    canonical: "https://jobapplication.fr",
+  },
   icons: {
     icon: [{ url: "/icon.svg", type: "image/svg+xml" }],
     apple: "/icon.svg",
   },
+  manifest: "/manifest.webmanifest",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -35,6 +44,34 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body className="min-h-screen bg-background font-sans antialiased">
+        {/* Schema.org JSON-LD */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebApplication",
+              name: "Job Application AI",
+              url: "https://jobapplication.fr",
+              description:
+                "Outil IA gratuit pour optimiser votre CV, analyser votre compatibilité ATS et rédiger des lettres de motivation personnalisées.",
+              applicationCategory: "BusinessApplication",
+              operatingSystem: "Any",
+              offers: {
+                "@type": "Offer",
+                price: "0",
+                priceCurrency: "EUR",
+              },
+              author: {
+                "@type": "Person",
+                name: "Amine Benbouazza",
+                email: "benbouazzamine@gmail.com",
+                sameAs: "https://www.linkedin.com/in/aminebenbouazza/",
+              },
+              inLanguage: ["fr", "en"],
+            }),
+          }}
+        />
         {/* GTM noscript — rendu uniquement après consentement */}
         <GTMNoScript />
         {/* GTM loader conditionnel au consentement cookies */}
