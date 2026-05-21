@@ -85,8 +85,7 @@ export function Sidebar({ view, onView }: { view: View; onView: (v: View) => voi
           </button>
         </div>
 
-        <p>{t.footer.version}</p>
-        <p>{t.footer.privacy}</p>
+        {/* Contact */}
         <p>
           <a
             href="mailto:benbouazzamine@gmail.com"
@@ -95,14 +94,25 @@ export function Sidebar({ view, onView }: { view: View; onView: (v: View) => voi
             {t.footer.contact}
           </a>
         </p>
-        <p>
-          <Link
-            href="/mentions-legales"
-            className="underline underline-offset-2 hover:text-foreground transition-colors"
-          >
-            {t.footer.legal}
+
+        {/* Liens légaux */}
+        <div className="flex flex-wrap gap-x-2 gap-y-1 leading-relaxed">
+          <Link href="/mentions-legales" className="underline underline-offset-2 hover:text-foreground transition-colors">
+            Mentions légales
           </Link>
-        </p>
+          <span>·</span>
+          <Link href="/cgu" className="underline underline-offset-2 hover:text-foreground transition-colors">
+            CGU
+          </Link>
+          <span>·</span>
+          <Link href="/politique-confidentialite" className="underline underline-offset-2 hover:text-foreground transition-colors">
+            Confidentialité
+          </Link>
+          <span>·</span>
+          <Link href="/cookies" className="underline underline-offset-2 hover:text-foreground transition-colors">
+            Cookies
+          </Link>
+        </div>
       </div>
     </aside>
   );
