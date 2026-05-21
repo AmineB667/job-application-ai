@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { RessourcesContent } from "@/components/ressources-content";
 
+// Re-generate every hour so scheduled articles auto-publish
+export const revalidate = 3600;
+
 export const metadata: Metadata = {
   title: "Ressources — CV, ATS & IA pour l'emploi | Job Application AI",
   description:

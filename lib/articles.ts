@@ -1,4 +1,5 @@
 import type { UILang } from "./ui-lang";
+import { NEW_ARTICLES } from "./articles-new";
 
 export type ArticleLang = {
   title: string;
@@ -11,15 +12,22 @@ export type Article = {
   fr: ArticleLang;
   en: ArticleLang;
   date: string;
+  publishAt?: string; // ISO date — hidden until this date; undefined = always visible
   readTime: number;
-  category: string; // always in English for routing/filtering
+  category: string;
 };
+
+/** Articles visible today (publishAt <= now or not set) */
+export function getPublishedArticles(): Article[] {
+  const now = new Date();
+  return ARTICLES.filter((a) => !a.publishAt || new Date(a.publishAt) <= now);
+}
 
 export function getArticleLocale(article: Article, lang: UILang): ArticleLang {
   return article[lang] ?? article.fr;
 }
 
-export const ARTICLES: Article[] = [
+const _BASE_ARTICLES: Article[] = [
   {
     slug: "cv-ats-passer-filtres-recruteurs",
     date: "2026-05-20",
@@ -757,6 +765,9 @@ export const ARTICLES: Article[] = [
     },
   },
 ];
+
+// All articles: 10 original + 50 generated
+export const ARTICLES: Article[] = [..._BASE_ARTICLES, ...NEW_ARTICLES];
 
 export function getArticleBySlug(slug: string): Article | undefined {
   return ARTICLES.find((a) => a.slug === slug);

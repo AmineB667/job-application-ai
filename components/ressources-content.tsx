@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { SiteHeader } from "@/components/site-header";
 import { useStore } from "@/lib/store";
-import { ARTICLES, getArticleLocale } from "@/lib/articles";
+import { getPublishedArticles, getArticleLocale } from "@/lib/articles";
 
 const UI = {
   fr: {
@@ -45,6 +45,7 @@ export function RessourcesContent() {
   const uiLang = useStore((s) => s.uiLang);
   const t = UI[uiLang] ?? UI.fr;
 
+  const ARTICLES = getPublishedArticles();
   const byCategory = ARTICLES.reduce<Record<string, typeof ARTICLES>>((acc, a) => {
     if (!acc[a.category]) acc[a.category] = [];
     acc[a.category].push(a);
