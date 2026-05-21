@@ -25,22 +25,16 @@ export function Sidebar({ view, onView }: { view: View; onView: (v: View) => voi
   return (
     <aside className="hidden lg:flex h-screen w-60 flex-col border-r bg-card/40 px-4 py-6 sticky top-0">
       <div className="flex items-center px-2 mb-8">
-        <Image
-          src="/logo.svg"
-          alt="Job Application AI"
-          width={160}
-          height={39}
-          className="dark:hidden"
-          priority
-        />
-        <Image
-          src="/logo-dark.svg"
-          alt="Job Application AI"
-          width={160}
-          height={39}
-          className="hidden dark:block"
-          priority
-        />
+        <span className="inline-flex bg-white rounded-md px-1.5 py-1">
+          <Image
+            src="/logo.png"
+            alt="JobApplication.fr"
+            width={140}
+            height={34}
+            className="h-[34px] w-auto"
+            priority
+          />
+        </span>
       </div>
       <nav className="space-y-0.5">
         {items.map((it) => {

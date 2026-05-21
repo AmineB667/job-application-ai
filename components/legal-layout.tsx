@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SiteHeader } from "@/components/site-header";
 
 export function LegalLayout({ title, updated, children }: {
   title: string;
@@ -7,6 +8,7 @@ export function LegalLayout({ title, updated, children }: {
 }) {
   return (
     <div className="min-h-screen bg-background text-foreground">
+      <SiteHeader activePage="legal" />
       <div className="container max-w-3xl py-12 px-6 space-y-10">
         <Link
           href="/"
